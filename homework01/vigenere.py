@@ -18,9 +18,7 @@ def encrypt_vigenere(plaintext: str, keyword: str) -> str:
     if len(plaintext) > len(keyword):
         div = len(plaintext) // len(keyword)
         time_word = keyword * div
-        dif = len(plaintext) - len(
-            time_word
-        )  # difference between plainttext and time_word
+        dif = len(plaintext) - len(time_word)  # difference between plainttext and time_word
         a = list(time_word)  # create list time_word
         while i < dif:
             a.append(a[i])
