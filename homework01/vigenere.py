@@ -68,7 +68,7 @@ def encrypt_vigenere(plaintext: str, keyword: str) -> str:
     encrypt_word = list()
 
     for m in ciph:
-        encrypt_word.append(chr(m))
+        encrypt_word.append((chr(m)))
 
     ciphertext = "".join(encrypt_word)
 
@@ -93,7 +93,7 @@ def decrypt_vigenere(ciphertext: str, keyword: str) -> str:
     # -----------GET KEY------------#
     s = list(keyword)  # create list keyword
     key = ""
-    i = 0
+    i: int = 0
 
     if len(ciphertext) > len(keyword):
         div = len(ciphertext) // len(keyword)
@@ -135,11 +135,11 @@ def decrypt_vigenere(ciphertext: str, keyword: str) -> str:
             w = x - y
             ciph.append(w)
         elif 65 <= x <= (65 + y):
-            w = abs(x-y-65)
+            w = abs(x - y - 65)
             ciph.append(91 - w)
-        elif 97 <= x <= (97+y):
-            w = abs(x-y-97)
-            ciph.append(123-w)
+        elif 97 <= x <= (97 + y):
+            w = abs(x - y - 97)
+            ciph.append(123 - w)
         else:
             ciph.append(x)
 
