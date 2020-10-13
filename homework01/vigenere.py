@@ -93,7 +93,7 @@ def decrypt_vigenere(ciphertext: str, keyword: str) -> str:
     # -----------GET KEY------------#
     s = list(keyword)  # create list keyword
     key = ""
-    i: int = 0
+    i = 0
 
     if len(ciphertext) > len(keyword):
         div = len(ciphertext) // len(keyword)
