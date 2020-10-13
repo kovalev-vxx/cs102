@@ -11,10 +11,12 @@ def encrypt_vigenere(plaintext: str, keyword: str) -> str:
     """
     ciphertext = ""
 
+    # -----------GET KEY------------#
+
     s = list(keyword)  # create list keyword
     key = ""
     i = 0
-    # -----------GET KEY------------#
+
     if len(plaintext) > len(keyword):
         div = len(plaintext) // len(keyword)
         time_word = keyword * div
@@ -43,7 +45,7 @@ def encrypt_vigenere(plaintext: str, keyword: str) -> str:
     for m in plaintext:  # fill symbols ID list
         id_symb.append(ord(m))
 
-    # ---------------GET ENCRYPT WORD-------------- #
+    # -------GET ENCRYPT WORD------- #
 
     ciph = list()
 
@@ -70,7 +72,7 @@ def encrypt_vigenere(plaintext: str, keyword: str) -> str:
 
     ciphertext = "".join(encrypt_word)
 
-    # ----------------------------- #
+    # --------------------------- #
 
     return ciphertext
 
@@ -88,14 +90,15 @@ def decrypt_vigenere(ciphertext: str, keyword: str) -> str:
     """
     plaintext = ""
 
+    # -----------GET KEY------------#
     s = list(keyword)  # create list keyword
     key = ""
     i = 0
-    # -----------GET KEY------------#
+
     if len(ciphertext) > len(keyword):
         div = len(ciphertext) // len(keyword)
         time_word = keyword * div
-        dif = len(ciphertext) - len(time_word)  # difference between plainttext and time_word
+        dif = len(ciphertext) - len(time_word)  # difference between ciphertext and time_word
         a = list(time_word)  # create list time_word
         while i < dif:
             a.append(a[i])
@@ -109,7 +112,6 @@ def decrypt_vigenere(ciphertext: str, keyword: str) -> str:
         key = keyword
     # -----------------------------#
 
-
     key = key.lower()  # transform key to lower register
 
     id_symb = list()  # create list with symbols ID
@@ -121,7 +123,7 @@ def decrypt_vigenere(ciphertext: str, keyword: str) -> str:
     for m in ciphertext:  # fill symbols ID list
         id_symb.append(ord(m))
 
-    # ---------------GET ENCRYPT WORD-------------- #
+    # -------GET DECRYPT WORD------- #
 
     ciph = list()
 
@@ -148,6 +150,6 @@ def decrypt_vigenere(ciphertext: str, keyword: str) -> str:
 
     plaintext = "".join(decrypt_word)
 
-    # ----------------------------- #
+    # ------------------------- #
 
     return plaintext
