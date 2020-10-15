@@ -12,23 +12,12 @@ def is_prime(n: int) -> bool:
     >>> is_prime(8)
     False
     """
-    i = 1
-    m = 0
-
-    if n > 1:
-        while i <= n:
-            if n / i == n // i:
-                i += 1
-                m += 1
-            else:
-                i += 1
-    else:
-        return False
-
-    if m == 2:
-        return True
-    else:
-        return False
+    for number in range(1, n):
+        number += 1
+        if n / number == n // number and number != 1 and number != n:
+            return False
+        else:
+            return True
 
 
 def gcd(a: int, b: int) -> int:
