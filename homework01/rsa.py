@@ -14,7 +14,7 @@ def is_prime(n: int) -> bool:
     """
     for number in range(1, n):
         number += 1
-        if n / number == n // number and number != 1 and number != n:
+        if n / number == n // number and number != n:
             return False
         else:
             return True
