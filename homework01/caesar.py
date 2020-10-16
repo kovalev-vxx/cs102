@@ -15,32 +15,32 @@ def encrypt_caesar(plaintext: str, shift: int = 3) -> str:
     ''
     """
     ciphertext = ""
-    id_symbol = []
+    id_symbols = []
     encrypt_id = []
 
     for i in plaintext:
-        id_symbol.append(ord(i))
+        id_symbols.append(ord(i))
 
-    for id in id_symbol:  # 65 - 90(A-Z), 97 - 122 (a-z)
-        if 65 <= id <= (90 - shift):
-            w = id + shift
+    for i in id_symbols:
+        if ord("A") <= i <= (ord("Z") - shift):
+            w = i + shift
             encrypt_id.append(w)
-        elif 97 <= id <= (122 - shift):
-            w = id + shift
+        elif ord("a") <= i <= (ord("z") - shift):
+            w = i + shift
             encrypt_id.append(w)
-        elif (90 - shift) <= id <= 97:
-            w = 90 - id
-            encrypt_id.append(64 + shift - w)
-        elif (97 - shift) <= id <= 122:
-            w = 122 - id
-            encrypt_id.append(96 + shift - w)
+        elif (ord("Z") - shift) <= i <= ord("a"):
+            w = ord("Z") - i
+            encrypt_id.append(ord("A") + shift - w - 1)
+        elif (ord("a") - shift) <= i <= ord("z"):
+            w = ord("z") - i
+            encrypt_id.append(ord("a") + shift - w - 1)
         else:
-            encrypt_id.append(id)
+            encrypt_id.append(i)
 
         encrypt_word = []
 
-        for ID in encrypt_id:  # transform ID to symbols
-            encrypt_word.append(chr(ID))
+        for i in encrypt_id:  # transform ID to symbols
+            encrypt_word.append(chr(i))
 
         ciphertext = "".join(encrypt_word)
 
@@ -61,32 +61,32 @@ def decrypt_caesar(ciphertext: str, shift: int = 3) -> str:
     ''
     """
     plaintext = ""
-    id_symbol = []
+    id_symbols = []
     decrypt_id = []
 
-    for symbol in ciphertext:
-        id_symbol.append(ord(symbol))
+    for i in ciphertext:
+        id_symbols.append(ord(i))
 
-    for id in id_symbol:  # 65 - 90(A-Z), 97 - 122 (a-z)
-        if (65 + shift) <= id <= 90:
-            w = id - shift
+    for i in id_symbols:  # 65 - 90(A-Z), 97 - 122 (a-z)
+        if (ord("A") + shift) <= i <= ord("Z"):
+            w = i - shift
             decrypt_id.append(w)
-        elif (97 + shift) <= id <= 122:
-            w = id - shift
+        elif (ord("a") + shift) <= i <= ord("z"):
+            w = i - shift
             decrypt_id.append(w)
-        elif 65 <= id <= (65 + shift):
-            w = abs(id - shift - 65)
-            decrypt_id.append(91 - w)
-        elif 97 <= id <= (97 + shift):
-            w = abs(id- shift - 97)
-            decrypt_id.append(123 - w)
+        elif ord("A") <= i <= (ord("A") + shift):
+            w = abs(i - shift - ord("A"))
+            decrypt_id.append(ord("Z") - w + 1)
+        elif ord("a") <= i <= (ord("a") + shift):
+            w = abs(i - shift - ord("a"))
+            decrypt_id.append(ord("z") - w + 1)
         else:
-            decrypt_id.append(id)
+            decrypt_id.append(i)
 
     decrypt_word = []
 
-    for ID in decrypt_id:  # transform ID to symbols
-        decrypt_word.append(chr(ID))
+    for i in decrypt_id:  # transform ID to symbols
+        decrypt_word.append(chr(i))
 
     plaintext = "".join(decrypt_word)
 
