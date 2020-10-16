@@ -54,66 +54,31 @@ def decrypt_vigenere(ciphertext: str, keyword: str) -> str:
     """
     plaintext = ""
 
-    # -----------GET KEY------------#
-    s = list(keyword)  # create list keyword
-    key = ""
-    i = 0
-
     if len(ciphertext) > len(keyword):
-        div = len(ciphertext) // len(keyword)
-        time_word = keyword * div
-        dif = len(ciphertext) - len(time_word)  # difference between ciphertext and time_word
-        a = list(time_word)  # create list time_word
-        while i < dif:
-            a.append(a[i])
-            i += 1
-        key = "".join(a)
-    elif len(ciphertext) < len(keyword):
-        len_key = len(ciphertext)
-        for i in range(0, len_key):
-            key += s[i]
+        key = (keyword * (1 + (len(ciphertext) // len(keyword)))).lower()
     else:
-        key = keyword
-    # -----------------------------#
+        key = keyword.lower()
 
-    key = key.lower()  # transform key to lower register
+    shifts = []
+    k = 0
 
-    id_symb = list()  # create list with symbols ID
-    shifts = list()  # create list with shifts
-
-    for m in key:
-        shifts.append(ord(m) - 97)  # fill shifts list
-
-    for m in ciphertext:  # fill symbols ID list
-        id_symb.append(ord(m))
-
-    # -------GET DECRYPT WORD------- #
-
-    ciph = list()
-
-    for x, y in zip(id_symb, shifts):  # 65 - 90(A-Z), 97 - 122 (a-z)
-        if (65 + y) <= x <= 90:
-            w = x - y
-            ciph.append(w)
-        elif (97 + y) <= x <= 122:
-            w = x - y
-            ciph.append(w)
-        elif 65 <= x <= (65 + y):
-            w = abs(x - y - 65)
-            ciph.append(91 - w)
-        elif 97 <= x <= (97 + y):
-            w = abs(x - y - 97)
-            ciph.append(123 - w)
+    for i in key:
+        k += 1
+        if k > len(ciphertext):
+            break
         else:
-            ciph.append(x)
+            shifts.append(ord(i) - 97)
 
-    decrypt_word = list()
-
-    for m in ciph:
-        decrypt_word.append(chr(m))
-
-    plaintext = "".join(decrypt_word)
-
-    # ------------------------- #
+    for i, m in zip(ciphertext, shifts):
+        if ord("A") + m <= ord(i) <= ord("Z"):
+            plaintext += chr(ord(i) - m)
+        elif ord("a") + m <= ord(i) <= ord("z"):
+            plaintext += chr(ord(i) - m)
+        elif ord("A") <= ord(i) <= ord("A") + m:
+            plaintext += chr(ord("Z") + 1 - abs(ord(i) - m - ord("A")))
+        elif ord("a") <= ord(i) <= ord("a") + m:
+            plaintext += chr(ord("z") + 1 - abs(ord(i) - m - ord("a")))
+        else:
+            plaintext += i
 
     return plaintext
