@@ -9,70 +9,34 @@ def encrypt_vigenere(plaintext: str, keyword: str) -> str:
     >>> encrypt_vigenere("ATTACKATDAWN", "LEMON")
     'LXFOPVEFRNHR'
     """
+
     ciphertext = ""
 
-    # -----------GET KEY------------#
-
-    s = list(keyword)  # create list keyword
-    key = ""
-    i = 0
-
     if len(plaintext) > len(keyword):
-        div = len(plaintext) // len(keyword)
-        time_word = keyword * div
-        dif = len(plaintext) - len(time_word)  # difference between plainttext and time_word
-        a = list(time_word)  # create list time_word
-        while i < dif:
-            a.append(a[i])
-            i += 1
-        key = "".join(a)
-    elif len(plaintext) < len(keyword):
-        len_key = len(plaintext)
-        for i in range(0, len_key):
-            key += s[i]
+        key = (keyword * (1 + (len(plaintext) // len(keyword)))).lower()
     else:
-        key = keyword
-    # -----------------------------#
+        key = keyword.lower()
 
-    key = key.lower()  # transform key to lower register
+    shifts = []
 
-    id_symb = list()  # create list with symbols ID
-    shifts = list()  # create list with shifts
+    for i in key:
+        shifts.append(ord(i) - 97)
 
-    for m in key:
-        shifts.append(ord(m) - 97)  # fill shifts list
-
-    for m in plaintext:  # fill symbols ID list
-        id_symb.append(ord(m))
-
-    # -------GET ENCRYPT WORD------- #
-
-    ciph = list()
-
-    for x, y in zip(id_symb, shifts):  # 65 - 90(A-Z), 97 - 122 (a-z)
-        if 65 <= x <= (90 - y):
-            w = x + y
-            ciph.append(w)
-        elif 97 <= x <= (122 - y):
-            w = x + y
-            ciph.append(w)
-        elif (90 - y) <= x <= 97:
-            w = 90 - x
-            ciph.append(64 + y - w)
-        elif (97 - y) <= x <= 122:
-            w = 122 - x
-            ciph.append(96 + y - w)
+    for i, m in zip(plaintext, shifts):
+        if ord("A") <= ord(i) <= ord("Z") - m:
+            w = ord(i) + m
+            ciphertext += chr(w)
+        elif ord("a") <= ord(i) <= ord("z") - m:
+            w = ord(i) + m
+            ciphertext += chr(w)
+        elif ord("Z") - m <= ord(i) <= ord("a"):
+            w = ord("Z") - ord(i)
+            ciphertext += chr(ord('A') - 1 + m - w)
+        elif ord("a") - m <= ord(i) <= ord("z"):
+            w = ord("z") - ord(i)
+            ciphertext += chr(ord("a") - 1 + m - w)
         else:
-            ciph.append(x)
-
-    encrypt_word = list()
-
-    for m in ciph:
-        encrypt_word.append((chr(m)))
-
-    ciphertext = "".join(encrypt_word)
-
-    # --------------------------- #
+            ciphertext += i
 
     return ciphertext
 
