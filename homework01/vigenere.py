@@ -18,23 +18,24 @@ def encrypt_vigenere(plaintext: str, keyword: str) -> str:
         key = keyword.lower()
 
     shifts = []
+    k = 0
 
     for i in key:
-        shifts.append(ord(i) - 97)
+        k += 1
+        if k > len(plaintext):
+            break
+        else:
+            shifts.append(ord(i) - 97)
 
     for i, m in zip(plaintext, shifts):
         if ord("A") <= ord(i) <= ord("Z") - m:
-            w = ord(i) + m
-            ciphertext += chr(w)
+            ciphertext += chr(ord(i) + m)
         elif ord("a") <= ord(i) <= ord("z") - m:
-            w = ord(i) + m
-            ciphertext += chr(w)
+            ciphertext += chr(ord(i) + m)
         elif ord("Z") - m <= ord(i) <= ord("a"):
-            w = ord("Z") - ord(i)
-            ciphertext += chr(ord('A') - 1 + m - w)
+            ciphertext += chr(ord("A") - 1 + m - ord("Z") + ord(i))
         elif ord("a") - m <= ord(i) <= ord("z"):
-            w = ord("z") - ord(i)
-            ciphertext += chr(ord("a") - 1 + m - w)
+            ciphertext += chr(ord("a") - 1 + m - ord("z") + ord(i))
         else:
             ciphertext += i
 
