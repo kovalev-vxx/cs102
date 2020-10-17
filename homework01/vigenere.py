@@ -22,7 +22,9 @@ def encrypt_vigenere(plaintext: str, keyword: str) -> str:
 
     for i in key:
         k += 1
-        if k <= len(plaintext):
+        if k > len(plaintext):
+            break
+        else:
             shifts.append(ord(i) - ord("a"))
 
     for i, m in zip(plaintext, shifts):
@@ -63,8 +65,10 @@ def decrypt_vigenere(ciphertext: str, keyword: str) -> str:
 
     for i in key:
         k += 1
-        if k <= len(ciphertext):
-            shifts.append(ord(i) - ord("a"))
+        if k > len(ciphertext):
+            break
+        else:
+            shifts.append(ord(i) - 97)
 
     for i, m in zip(ciphertext, shifts):
         if ord("A") + m <= ord(i) <= ord("Z"):

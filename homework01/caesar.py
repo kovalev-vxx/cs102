@@ -59,3 +59,12 @@ def decrypt_caesar(ciphertext: str, shift: int = 3) -> str:
             plaintext += i
 
     return plaintext
+
+
+def caesar_breaker_brute_force(ciphertext: str, dictionary: tp.Set[str]) -> int:
+    """
+    Brute force breaking a Caesar cipher.
+    """
+    best_shift = 0
+
+    return best_shift
