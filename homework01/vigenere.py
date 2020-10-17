@@ -25,7 +25,7 @@ def encrypt_vigenere(plaintext: str, keyword: str) -> str:
         if k > len(plaintext):
             break
         else:
-            shifts.append(ord(i) - 97)
+            shifts.append(ord(i) - ord("a"))
 
     for i, m in zip(plaintext, shifts):
         if ord("A") <= ord(i) <= ord("Z") - m:
