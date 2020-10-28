@@ -140,7 +140,17 @@ def find_possible_values(grid: List[List[str]], pos: Tuple[int, int]) -> Set[str
     >>> values == {'2', '5', '9'}
     True
     """
-    pass
+    row, col = pos
+    values = {'1', '2', '3', '4', '5', '6', '7', '8', '9'}
+    for i in grid[row]:
+        values.discard(i)
+    for i in grid:
+        for m in i[col]:
+            values.discard(m)
+    for i in get_block(grid,pos):
+            values.discard(i)
+
+    return values
 
 
 def solve(grid: List[List[str]]) -> Optional[List[List[str]]]:
