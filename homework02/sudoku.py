@@ -47,7 +47,13 @@ def get_row(grid: List[List[str]], pos: Tuple[int, int]) -> List[str]:
     >>> get_row([['1', '2', '3'], ['4', '5', '6'], ['.', '8', '9']], (2, 0))
     ['.', '8', '9']
     """
-    pass
+
+    row, col = pos
+    grid = grid[row:]
+    for i in grid:
+        for m in i:
+            if m == ".":
+                return i
 
 
 def get_col(grid: List[List[str]], pos: Tuple[int, int]) -> List[str]:
@@ -60,7 +66,14 @@ def get_col(grid: List[List[str]], pos: Tuple[int, int]) -> List[str]:
     >>> get_col([['1', '2', '3'], ['4', '5', '6'], ['.', '8', '9']], (0, 2))
     ['3', '6', '9']
     """
-    pass
+    actual_col = []
+    row, col = pos
+    grid = grid[row:]
+    for i in grid:
+        for m in i:
+            if m == i[col]:
+                actual_col.append(m)
+    return actual_col
 
 
 def get_block(grid: List[List[str]], pos: Tuple[int, int]) -> List[str]:
