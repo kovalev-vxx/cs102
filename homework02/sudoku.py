@@ -30,8 +30,8 @@ def group(values: List[str], n: int) -> List[List[str]]:
     """
     list=[]
     while len(values) > n:
-        half_list=values[:n]
-        list.append(half_list)
+        part_list=values[:n]
+        list.append(part_list)
         values=values[n:]
     list.append(values)
     return list
@@ -88,21 +88,25 @@ def get_block(grid: List[List[str]], pos: Tuple[int, int]) -> List[str]:
     ['2', '8', '.', '.', '.', '5', '.', '7', '9']
     """
     row, col = pos
-    expected_block = []
+    expected_block =[]
+    if col % 3 == 0:
+        col +=3
+    if row % 3 == 0:
+        row +=3
     if row == 0:
-        row += 1
+        row+=1
     if col == 0:
-        col += 1
+        col +=1
     while row % 3 != 0:
-        row += 1
+        row+=1
     while col % 3 != 0:
-        col += 1
-    row = row - 1
-    col = (col - 1) // 3
-    i = row - 2
-    while i <= row:
-        expected_block += (group(grid[i], 3)[col])
-        i += 1
+        col +=1
+
+    for i in grid[row-3:row]:
+        for m in i[col-3:col]:
+            expected_block.append(m)
+
+
     return expected_block
 
 
