@@ -128,9 +128,8 @@ def find_empty_positions(grid: List[List[str]]) -> Optional[Tuple[int, int]]:
             if m == '.':
                 row = i.index(m)
                 col = grid.index(i)
-    pos = col, row
-
-    return pos
+                pos = col, row
+                return pos
 
 
 def find_possible_values(grid: List[List[str]], pos: Tuple[int, int]) -> Set[str]:
