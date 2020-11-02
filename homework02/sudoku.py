@@ -170,22 +170,50 @@ def solve(grid: List[List[str]]) -> Optional[List[List[str]]]:
     [['5', '3', '4', '6', '7', '8', '9', '1', '2'], ['6', '7', '2', '1', '9', '5', '3', '4', '8'], ['1', '9', '8', '3', '4', '2', '5', '6', '7'], ['8', '5', '9', '7', '6', '1', '4', '2', '3'], ['4', '2', '6', '8', '5', '3', '7', '9', '1'], ['7', '1', '3', '9', '2', '4', '8', '5', '6'], ['9', '6', '1', '5', '3', '7', '2', '8', '4'], ['2', '8', '7', '4', '1', '9', '6', '3', '5'], ['3', '4', '5', '2', '8', '6', '1', '7', '9']]
     """
 
+    numbers = ['1', '2', '3', '4', '5', '6', '7', '8', '9']
+
     for row in range(9):
         for col in range(9):
             if grid[row][col] == '.':
-                if len(list(find_possible_values(grid, (row, col)))) == 1:
-                    for x in list(find_possible_values(grid, (row, col))):
-                        grid[row][col] = str(x)
+                for x in numbers:
+                    if x in list(find_possible_values(grid,(row,col))):
+                        grid[row][col] = x
                         solve(grid)
-                    return grid
+                        grid[row][col] = '.'
+                return
+    print(grid)
+
 
 
 
 def check_solution(solution: List[List[str]]) -> bool:
     """ Если решение solution верно, то вернуть True, в противном случае False """
     # TODO: Add doctests with bad puzzles
-    pass
+    values = {'1', '2', '3', '4', '5', '6', '7', '8', '9'}
 
+
+    for row in range (9):
+        for col in range (9):
+            pos = row,col
+            block = set()
+            row_solution = set()
+            col_solution = set()
+            if not solution[row][col] in values:
+                return False
+            for i in get_block(solution, pos):
+                block.add(i)
+            if block != values:
+                return False
+            for i in solution[row]:
+                row_solution.add(i)
+            if row_solution != values:
+                return False
+            for i in grid:
+                for m in i[col]:
+                    col_solution.add(m)
+            if col_solution != values:
+                return False
+            return True
 
 def generate_sudoku(N: int) -> List[List[str]]:
     """ Генерация судоку заполненного на N элементов
