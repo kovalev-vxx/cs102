@@ -170,20 +170,17 @@ def solve(grid: List[List[str]]) -> Optional[List[List[str]]]:
     [['5', '3', '4', '6', '7', '8', '9', '1', '2'], ['6', '7', '2', '1', '9', '5', '3', '4', '8'], ['1', '9', '8', '3', '4', '2', '5', '6', '7'], ['8', '5', '9', '7', '6', '1', '4', '2', '3'], ['4', '2', '6', '8', '5', '3', '7', '9', '1'], ['7', '1', '3', '9', '2', '4', '8', '5', '6'], ['9', '6', '1', '5', '3', '7', '2', '8', '4'], ['2', '8', '7', '4', '1', '9', '6', '3', '5'], ['3', '4', '5', '2', '8', '6', '1', '7', '9']]
     """
 
-    numbers = ['1', '2', '3', '4', '5', '6', '7', '8', '9']
-
     for row in range(9):
         for col in range(9):
             if grid[row][col] == '.':
-                for x in numbers:
-                    if x in list(find_possible_values(grid,(row,col))):
-                        grid[row][col] = x
-                        solve(grid)
+                for x in list(find_possible_values(grid, (row, col))):
+                    grid[row][col] = x
+                    if solve(grid):
+                        return solve(grid)
+                    else:
                         grid[row][col] = '.'
                 return
-    print(grid)
-
-
+    return grid
 
 
 def check_solution(solution: List[List[str]]) -> bool:
