@@ -208,12 +208,12 @@ def check_solution(solution: List[List[str]]) -> bool:
                 row_solution.add(i)
             if row_solution != values:
                 return False
-            for i in grid:
+            for i in solution:
                 for m in i[col]:
                     col_solution.add(m)
             if col_solution != values:
                 return False
-            return True
+    return True
 
 def generate_sudoku(N: int) -> List[List[str]]:
     """ Генерация судоку заполненного на N элементов
