@@ -175,8 +175,9 @@ def solve(grid: List[List[str]]) -> Optional[List[List[str]]]:
             if grid[row][col] == '.':
                 for x in list(find_possible_values(grid, (row, col))):
                     grid[row][col] = x
-                    if solve(grid):
-                        return solve(grid)
+                    solution = solve(grid)
+                    if solution:
+                        return solution
                     else:
                         grid[row][col] = '.'
                 return
