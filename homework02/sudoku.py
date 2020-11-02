@@ -54,11 +54,8 @@ def get_row(grid: List[List[str]], pos: Tuple[int, int]) -> List[str]:
     """
 
     row, col = pos
-    grid = grid[row:]
-    for i in grid:
-        for m in i:
-            if m == ".":
-                return i
+    return grid[row]
+
 
 
 def get_col(grid: List[List[str]], pos: Tuple[int, int]) -> List[str]:
