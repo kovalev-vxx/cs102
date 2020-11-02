@@ -70,11 +70,10 @@ def get_col(grid: List[List[str]], pos: Tuple[int, int]) -> List[str]:
     """
     actual_col = []
     row, col = pos
-    grid = grid[row:]
-    for i in grid:
-        for m in i:
-            if m == i[col]:
-                actual_col.append(m)
+    for row in grid:
+        for i in row[col]:
+            actual_col.append(i)
+
     return actual_col
 
 
