@@ -57,7 +57,6 @@ def get_row(grid: List[List[str]], pos: Tuple[int, int]) -> List[str]:
     return grid[row]
 
 
-
 def get_col(grid: List[List[str]], pos: Tuple[int, int]) -> List[str]:
     """Возвращает все значения для номера столбца, указанного в pos
 
