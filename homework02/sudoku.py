@@ -1,4 +1,6 @@
 from typing import Tuple, List, Set, Optional
+from random import randint
+import random
 
 
 def read_sudoku(filename: str) -> List[List[str]]:
@@ -233,8 +235,29 @@ def generate_sudoku(N: int) -> List[List[str]]:
     >>> check_solution(solution)
     True
     """
-    pass
+    max_sudoku_numbers = 81
+    if N > max_sudoku_numbers:
+        N = max_sudoku_numbers
+    z=0
+    new_grid=[]
+    empty_grid = []
+    for row in range(9):
+        for col in range(9):
+            empty_grid.append('.')
+    random_grid = group(empty_grid, 9)
+    solution=solve(random_grid)
 
+    for i in solution:
+        for m in i:
+            new_grid.append(m)
+
+    while z != max_sudoku_numbers-N:
+        a = random.choice(new_grid)
+        if a != '.':
+            new_grid[new_grid.index((a))] = '.'
+            z+=1
+
+    return group(new_grid,9)
 
 if __name__ == '__main__':
     for fname in ['puzzle1.txt', 'puzzle2.txt', 'puzzle3.txt']:
