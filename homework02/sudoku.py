@@ -67,11 +67,11 @@ def get_col(grid: List[List[str]], pos: Tuple[int, int]) -> List[str]:
     >>> get_col([['1', '2', '3'], ['4', '5', '6'], ['.', '8', '9']], (0, 2))
     ['3', '6', '9']
     """
-    actual_col = []
+    actual_col: List[str] = []
     row, col = pos
     for row in grid:
         for i in row[col]:
-            actual_col.append(i)
+            actual_col.append(str(i))
 
     return actual_col
 
@@ -102,8 +102,8 @@ def get_block(grid: List[List[str]], pos: Tuple[int, int]) -> List[str]:
     while col % 3 != 0:
         col += 1
 
-    for i in grid[row - 3 : row]:
-        for m in i[col - 3 : col]:
+    for i in grid[row - 3: row]:
+        for m in i[col - 3: col]:
             expected_block.append(m)
 
     return expected_block
@@ -141,7 +141,7 @@ def find_possible_values(grid: List[List[str]], pos: Tuple[int, int]) -> Set[str
     True
     """
     row, col = pos
-    values = {"1", "2", "3", "4", "5", "6", "7", "8", "9"}
+    values: Set[str] = {"1", "2", "3", "4", "5", "6", "7", "8", "9"}
     for i in grid[row]:
         values.discard(i)
     for i in grid:
