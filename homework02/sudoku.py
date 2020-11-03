@@ -33,13 +33,12 @@ def group(values: List[str], n: int) -> List[List[str]]:
     >>> group([1,2,3,4,5,6,7,8,9], 3)
     [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
     """
-    list = []
-    while len(values) > n:
+    group_list = []
+    while values:
         part_list = values[:n]
-        list.append(part_list)
+        group_list.append(part_list)
         values = values[n:]
-    list.append(values)
-    return list
+    return group_list
 
 
 def get_row(grid: List[List[str]], pos: Tuple[int, int]) -> List[str]:
@@ -69,11 +68,8 @@ def get_col(grid: List[List[str]], pos: Tuple[int, int]) -> List[str]:
     """
     actual_col = []
     row, col = pos
-    get_grid = grid
-    for m in get_grid:
-        for i in m[col]:
-            actual_col.append(i)
-
+    for m in grid:
+        actual_col.append(m[col])
     return actual_col
 
 
@@ -120,13 +116,10 @@ def find_empty_positions(grid: List[List[str]]) -> Optional[Tuple[int, int]]:
     >>> find_empty_positions([['1', '2', '3'], ['4', '5', '6'], ['.', '8', '9']])
     (2, 0)
     """
-    for i in grid:
-        for m in i:
-            if m == ".":
-                row = i.index(m)
-                col = grid.index(i)
-                pos = col, row
-                return pos
+    for row in range(9):
+        for col, value in enumerate(grid[row]):
+            if value == ".":
+                return row, col
     return None
 
 
