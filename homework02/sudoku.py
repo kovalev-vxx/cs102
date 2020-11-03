@@ -254,7 +254,7 @@ def generate_sudoku(N: int) -> List[List[str]]:
             new_grid[new_grid.index((a))] = "."
             z += 1
 
-    if group(new_grid,9) is not None:
+    if group(new_grid, 9) is not None:
         return group(new_grid, 9)
 
 
