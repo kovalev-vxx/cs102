@@ -103,8 +103,8 @@ def get_block(grid: List[List[str]], pos: Tuple[int, int]) -> List[str]:
     while col % 3 != 0:
         col += 1
 
-    for i in grid[row - 3: row]:
-        for m in i[col - 3: col]:
+    for i in grid[row - 3 : row]:
+        for m in i[col - 3 : col]:
             expected_block.append(m)
 
     return expected_block
