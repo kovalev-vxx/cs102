@@ -2,10 +2,6 @@ import pathlib
 import random
 import typing as tp
 import copy
-from pprint import pprint
-
-import pygame
-from pygame.locals import *
 
 Cell = tp.Tuple[int, int]
 Cells = tp.List[int]
@@ -14,10 +10,10 @@ Grid = tp.List[Cells]
 
 class GameOfLife:
     def __init__(
-            self,
-            size: tp.Tuple[int, int],
-            randomize: bool = True,
-            max_generations: tp.Optional[float] = float("inf"),
+        self,
+        size: tp.Tuple[int, int],
+        randomize: bool = True,
+        max_generations: tp.Optional[float] = float("inf"),
     ) -> None:
         # Размер клеточного поля
         self.rows, self.cols = size
@@ -48,7 +44,7 @@ class GameOfLife:
         while random_grid:
             part_list = random_grid[: self.cols]
             grid.append(part_list)
-            random_grid = random_grid[self.cols:]
+            random_grid = random_grid[self.cols :]
         return grid
 
     def get_neighbours(self, cell: Cell) -> Cells:
@@ -187,4 +183,3 @@ class GameOfLife:
                     save_file.write(str(self.curr_generation[i][j]))
         save_file.close()
         pass
-
