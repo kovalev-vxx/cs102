@@ -2,6 +2,7 @@ import pathlib
 import random
 import typing as tp
 import copy
+from pprint import pprint
 
 import pygame
 from pygame.locals import *
@@ -13,10 +14,10 @@ Grid = tp.List[Cells]
 
 class GameOfLife:
     def __init__(
-        self,
-        size: tp.Tuple[int, int],
-        randomize: bool = True,
-        max_generations: tp.Optional[float] = float("inf"),
+            self,
+            size: tp.Tuple[int, int],
+            randomize: bool = True,
+            max_generations: tp.Optional[float] = float("inf"),
     ) -> None:
         # Размер клеточного поля
         self.rows, self.cols = size
@@ -47,7 +48,7 @@ class GameOfLife:
         while random_grid:
             part_list = random_grid[: self.cols]
             grid.append(part_list)
-            random_grid = random_grid[self.cols :]
+            random_grid = random_grid[self.cols:]
         return grid
 
     def get_neighbours(self, cell: Cell) -> Cells:
@@ -137,7 +138,7 @@ class GameOfLife:
         """
         Не превысило ли текущее число поколений максимально допустимое.
         """
-        if self.generations <= self.max_generations:
+        if self.generations <= self.max_generations:  # type: ignore
             return True
         else:
             return False
@@ -167,9 +168,9 @@ class GameOfLife:
 
         grid = []
         while digits:
-            part_list = digits[:cols]
+            part_list = digits[:rows]
             grid.append(part_list)
-            digits = digits[cols:]
+            digits = digits[rows:]
         life.curr_generation = grid
         return life
 
@@ -186,3 +187,4 @@ class GameOfLife:
                     save_file.write(str(self.curr_generation[i][j]))
         save_file.close()
         pass
+
