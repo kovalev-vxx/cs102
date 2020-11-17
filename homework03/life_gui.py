@@ -101,7 +101,7 @@ class GUI(UI):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Settings")
+    parser = argparse.ArgumentParser(description="Настройки GAME OF LIFE")
     parser.add_argument(
         "--width", default=320, type=int, action="store", dest="width", help="Ширина поля"
     )
@@ -139,8 +139,8 @@ if __name__ == "__main__":
     if args.load:
         cell_width = GameOfLife.from_file(args.load_name).rows
         cell_height = GameOfLife.from_file(args.load_name).cols
-        width = cell_width * args.cell_size
-        height = cell_height * args.cell_size
+        args.width = cell_width * args.cell_size
+        args.height = cell_height * args.cell_size
     else:
         cell_width = args.width // args.cell_size
         cell_height = args.height // args.cell_size

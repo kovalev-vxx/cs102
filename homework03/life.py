@@ -15,20 +15,13 @@ class GameOfLife:
         randomize: bool = True,
         max_generations: tp.Optional[float] = float("inf"),
     ) -> None:
-        # Размер клеточного поля
         self.rows, self.cols = size
-        # Предыдущее поколение клеток
         self.prev_generation = self.create_grid()
-        # Текущее поколение клеток
         self.curr_generation = self.create_grid(randomize=randomize)
-        # Максимальное число поколений
         self.max_generations = max_generations
-        # Текущее число поколений
         self.generations = 1
 
     def create_grid(self, randomize: bool = False) -> Grid:
-        # Copy from previous assignment
-
         random_grid = []
 
         if randomize == False:
@@ -107,7 +100,6 @@ class GameOfLife:
         return neighbours
 
     def get_next_generation(self) -> Grid:
-        # Copy from previous assignment
         copy_grid = copy.deepcopy(self.curr_generation)
         for i in range(self.rows):
             for j in range(self.cols):
@@ -120,20 +112,13 @@ class GameOfLife:
         return copy_grid
 
     def step(self) -> None:
-        """
-        Выполнить один шаг игры.
-        """
         self.prev_generation = self.curr_generation
         self.curr_generation = self.get_next_generation()
         self.generations += 1
-
         pass
 
     @property
     def is_max_generations_exceeded(self) -> bool:
-        """
-        Не превысило ли текущее число поколений максимально допустимое.
-        """
         if self.generations <= self.max_generations:  # type: ignore
             return True
         else:
@@ -141,9 +126,6 @@ class GameOfLife:
 
     @property
     def is_changing(self) -> bool:
-        """
-        Изменилось ли состояние клеток с предыдущего шага.
-        """
         if self.prev_generation != self.curr_generation:
             return True
         else:
@@ -151,9 +133,6 @@ class GameOfLife:
 
     @staticmethod
     def from_file(filename: pathlib.Path) -> "GameOfLife":
-        """
-        Прочитать состояние клеток из указанного файла.
-        """
         with open(filename, "r") as file:
             lst = file.readlines()
         digits = [int(c) for c in open(filename).read() if c in "01"]
@@ -171,9 +150,6 @@ class GameOfLife:
         return life
 
     def save(self, filename: pathlib.Path) -> None:
-        """
-        Сохранить текущее состояние клеток в указанный файл.
-        """
         save_file = open(filename, "w")
         for i in range(self.rows):
             for j in range(self.cols):

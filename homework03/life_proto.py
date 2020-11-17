@@ -33,9 +33,9 @@ class GameOfLife:
     def draw_lines(self) -> None:
         """ Отрисовать сетку """
         for x in range(0, self.width, self.cell_size):
-            pygame.draw.line(self.screen, pygame.Color("black"), (x, 0), (x, self.height))
+            pygame.draw.line(self.screen, pygame.Color("gray"), (x, 0), (x, self.height))
         for y in range(0, self.height, self.cell_size):
-            pygame.draw.line(self.screen, pygame.Color("black"), (0, y), (self.width, y))
+            pygame.draw.line(self.screen, pygame.Color("gray"), (0, y), (self.width, y))
 
     def run(self) -> None:
         """ Запустить игру """
@@ -51,7 +51,7 @@ class GameOfLife:
         running = True
         while running:
             for event in pygame.event.get():
-                if event.type == QUIT:
+                if event.type == QUIT: # type: ignore
                     running = False
 
             # Отрисовка списка клеток
@@ -118,7 +118,6 @@ class GameOfLife:
                         pygame.Color("white"),
                         (y * self.cell_size, x * self.cell_size, self.cell_size, self.cell_size),
                     )
-        pass
 
     def get_neighbours(self, cell: Cell) -> Cells:
         """
@@ -219,5 +218,6 @@ class GameOfLife:
 
 
 if __name__ == "__main__":
-    game = GameOfLife(320, 240, 20)
+    game = GameOfLife(160, 120, 20, 10)
     game.run()
+    print(123)
