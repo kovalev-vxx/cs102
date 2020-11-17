@@ -215,9 +215,3 @@ class GameOfLife:
                 else:
                     copy_grid[i][j] = 0
         return copy_grid
-
-
-if __name__ == "__main__":
-    game = GameOfLife(160, 120, 20, 10)
-    game.run()
-    print(123)
