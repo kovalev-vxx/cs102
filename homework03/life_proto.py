@@ -47,7 +47,8 @@ class GameOfLife:
 
         # Создание списка клеток
         self.grid = self.create_grid(randomize=True)
-
+        print(self.grid)
+        print(self.get_neighbours((0, 0)))
         running = True
         while running:
             for event in pygame.event.get():
@@ -82,23 +83,16 @@ class GameOfLife:
             Матрица клеток размером `cell_height` х `cell_width`.
         """
 
-        random_grid = []
-
-        if randomize == False:
-            for row in range(self.cell_height):
-                for col in range(self.cell_width):
-                    random_grid.append(0)
-        else:
-            for row in range(self.cell_height):
-                for col in range(self.cell_width):
-                    random_grid.append(random.randint(0, 1))
-
         grid = []
-        while random_grid:
-            part_list = random_grid[: self.cell_width]
-            grid.append(part_list)
-            random_grid = random_grid[self.cell_width :]
-        return grid
+        for row in range(self.cell_width):
+            row = []  # type: ignore
+            for col in range(self.height):
+                if randomize == False:
+                    row.append(0)  # type: ignore
+                else:
+                    row.append(random.randint(0, 1))  # type: ignore
+            grid.append(row)
+        return grid  # type: ignore
 
     def draw_grid(self) -> None:
         """
@@ -139,60 +133,18 @@ class GameOfLife:
         """
         x, y = cell
         neighbours = []
-
-        if x == 0 and y == 0:
-            for i in range(x, x + 2):
-                for j in range(y, y + 2):
-                    if not (i == x and j == y):
-                        neighbours.append(self.grid[i][j])
-
-        elif x == 0 and 0 < y < self.cell_width - 1:
-            for i in range(x, x + 2):
-                for j in range(y - 1, y + 2):
-                    if not (i == x and j == y):
-                        neighbours.append(self.grid[i][j])
-
-        elif 0 < x < self.cell_height - 1 and y == 0:
-            for i in range(x - 1, x + 2):
-                for j in range(y, y + 2):
-                    if not (i == x and j == y):
-                        neighbours.append(self.grid[i][j])
-
-        elif x == self.cell_height - 1 and y == self.cell_width - 1:
-            for i in range(x - 1, x + 1):
-                for j in range(y - 1, y + 1):
-                    if not (i == x and j == y):
-                        neighbours.append(self.grid[i][j])
-
-        elif x == self.cell_height - 1 and 0 < y < self.cell_width - 1:
-            for i in range(x - 1, x + 1):
-                for j in range(y - 1, y + 2):
-                    if not (i == x and j == y):
-                        neighbours.append(self.grid[i][j])
-
-        elif 0 < x < self.cell_height - 1 and y == self.cell_width - 1:
-            for i in range(x - 1, x + 2):
-                for j in range(y - 1, y + 1):
-                    if not (i == x and j == y):
-                        neighbours.append(self.grid[i][j])
-
-        elif x == 0 and y == self.cell_width - 1:
-            for i in range(x, x + 2):
-                for j in range(y - 1, y + 1):
-                    if not (i == x and j == y):
-                        neighbours.append(self.grid[i][j])
-
-        elif x == self.cell_height - 1 and y == 0:
-            for i in range(x - 1, x + 1):
-                for j in range(y, y + 2):
-                    if not (i == x and j == y):
-                        neighbours.append(self.grid[i][j])
-        else:
-            for i in range(x - 1, x + 2):
-                for j in range(y - 1, y + 2):
-                    if not (i == x and j == y):
-                        neighbours.append(self.grid[i][j])
-
+        for i in range(x - 1, x + 2):
+            for m in range(y - 1, y + 2):
+                if i < 0:
+                    continue
+                if m < 0:
+                    continue
+                if i > self.cell_height - 1:
+                    continue
+                if m > self.cell_width - 1:
+                    continue
+                if not (i == x and m == y):
+                    neighbours.append(self.grid[i][m])
         return neighbours
 
     def get_next_generation(self) -> Grid:

@@ -22,81 +22,32 @@ class GameOfLife:
         self.generations = 1
 
     def create_grid(self, randomize: bool = False) -> Grid:
-        random_grid = []
-
-        if randomize == False:
-            for row in range(self.rows):
-                for col in range(self.cols):
-                    random_grid.append(0)
-        else:
-            for row in range(self.rows):
-                for col in range(self.cols):
-                    random_grid.append(random.randint(0, 1))
-
         grid = []
-        while random_grid:
-            part_list = random_grid[: self.cols]
-            grid.append(part_list)
-            random_grid = random_grid[self.cols :]
-        return grid
+        for row in range(self.rows):
+            row = []  # type: ignore
+            for col in range(self.cols):
+                if randomize == False:
+                    row.append(0)  # type: ignore
+                else:
+                    row.append(random.randint(0, 1))  # type: ignore
+            grid.append(row)
+        return grid  # type: ignore
 
     def get_neighbours(self, cell: Cell) -> Cells:
-
         x, y = cell
         neighbours = []
-
-        if x == 0 and y == 0:
-            for i in range(x, x + 2):
-                for j in range(y, y + 2):
-                    if not (i == x and j == y):
-                        neighbours.append(self.curr_generation[i][j])
-
-        elif x == 0 and 0 < y < self.cols - 1:
-            for i in range(x, x + 2):
-                for j in range(y - 1, y + 2):
-                    if not (i == x and j == y):
-                        neighbours.append(self.curr_generation[i][j])
-
-        elif 0 < x < self.rows - 1 and y == 0:
-            for i in range(x - 1, x + 2):
-                for j in range(y, y + 2):
-                    if not (i == x and j == y):
-                        neighbours.append(self.curr_generation[i][j])
-
-        elif x == self.rows - 1 and y == self.cols - 1:
-            for i in range(x - 1, x + 1):
-                for j in range(y - 1, y + 1):
-                    if not (i == x and j == y):
-                        neighbours.append(self.curr_generation[i][j])
-
-        elif x == self.rows - 1 and 0 < y < self.cols - 1:
-            for i in range(x - 1, x + 1):
-                for j in range(y - 1, y + 2):
-                    if not (i == x and j == y):
-                        neighbours.append(self.curr_generation[i][j])
-
-        elif 0 < x < self.rows - 1 and y == self.cols - 1:
-            for i in range(x - 1, x + 2):
-                for j in range(y - 1, y + 1):
-                    if not (i == x and j == y):
-                        neighbours.append(self.curr_generation[i][j])
-
-        elif x == 0 and y == self.cols - 1:
-            for i in range(x, x + 2):
-                for j in range(y - 1, y + 1):
-                    if not (i == x and j == y):
-                        neighbours.append(self.curr_generation[i][j])
-
-        elif x == self.rows - 1 and y == 0:
-            for i in range(x - 1, x + 1):
-                for j in range(y, y + 2):
-                    if not (i == x and j == y):
-                        neighbours.append(self.curr_generation[i][j])
-        else:
-            for i in range(x - 1, x + 2):
-                for j in range(y - 1, y + 2):
-                    if not (i == x and j == y):
-                        neighbours.append(self.curr_generation[i][j])
+        for i in range(x - 1, x + 2):
+            for m in range(y - 1, y + 2):
+                if i < 0:
+                    continue
+                if m < 0:
+                    continue
+                if i > self.rows - 1:
+                    continue
+                if m > self.cols - 1:
+                    continue
+                if not (i == x and m == y):
+                    neighbours.append(self.curr_generation[i][m])
         return neighbours
 
     def get_next_generation(self) -> Grid:
@@ -115,7 +66,6 @@ class GameOfLife:
         self.prev_generation = self.curr_generation
         self.curr_generation = self.get_next_generation()
         self.generations += 1
-        pass
 
     @property
     def is_max_generations_exceeded(self) -> bool:
@@ -150,12 +100,11 @@ class GameOfLife:
         return life
 
     def save(self, filename: pathlib.Path) -> None:
-        save_file = open(filename, "w")
-        for i in range(self.rows):
-            for j in range(self.cols):
-                if j == self.cols - 1:
-                    save_file.write(str(self.curr_generation[i][j]) + "\n")
-                else:
-                    save_file.write(str(self.curr_generation[i][j]))
-        save_file.close()
-        pass
+        with open(filename, "w") as save_file:
+            for i in range(self.rows):
+                for j in range(self.cols):
+                    if j == self.cols - 1:
+                        save_file.write(str(self.curr_generation[i][j]) + "\n")
+                    else:
+                        save_file.write(str(self.curr_generation[i][j]))
+            save_file.close()
