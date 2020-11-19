@@ -47,8 +47,6 @@ class GameOfLife:
 
         # Создание списка клеток
         self.grid = self.create_grid(randomize=True)
-        print(self.grid)
-        print(self.get_neighbours((0, 0)))
         running = True
         while running:
             for event in pygame.event.get():
