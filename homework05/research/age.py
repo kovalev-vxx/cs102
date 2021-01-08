@@ -2,7 +2,6 @@ import datetime as dt
 from statistics import median
 import typing as tp
 import time
-from datetime import datetime
 
 from vkapi.friends import get_friends
 
@@ -17,7 +16,7 @@ def age_predict(user_id: int) -> tp.Optional[float]:
     :return: Медианный возраст пользователя.
     """
     request = get_friends(user_id=user_id, fields=("bdate"))
-    curret_year = int(datetime.now().year)
+    curret_year = int(dt.datetime.now().year)
     friendsAge = []
 
     for i in request.items:
