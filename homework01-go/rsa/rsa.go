@@ -52,8 +52,14 @@ func multiplicativeInverse(e int, phi int) int {
 		phi, e = e, phi%e
 		x, xx = xx, x-xx*q
 		y, yy = yy, y-yy*q
-	}
-	return (int(math.Abs(float64(y+N))) % N)
+    }
+    
+    if y < 0 && N < 0{
+        return((int(math.Abs(float64(y+N))) % N)*(-1))
+        } else if N < 0 && y > 0{
+        return((int(math.Abs(float64(y+N))) % N)*(-1))
+        } else {
+        return(int(math.Abs(float64(y+N))) % N) 
 }
 
 func GenerateKeypair(p int, q int) (KeyPair, error) {
