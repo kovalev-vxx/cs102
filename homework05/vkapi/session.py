@@ -29,26 +29,27 @@ class Session(requests.Session):
         self.backoff_factor = backoff_factor
 
     def get(self, url: str, *args: tp.Any, **kwargs: tp.Any) -> requests.Response:
-        url = f'{self.base_url}/{url}'
-        
+        url = f"{self.base_url}/{url}"
+
         http = requests.Session()
 
         retries = Retry(
-                total=self.max_retries,
-                backoff_factor=self.backoff_factor,
-                status_forcelist=[429, 500, 502, 503, 504],
-                method_whitelist=["GET"]
+            total=self.max_retries,
+            backoff_factor=self.backoff_factor,
+            status_forcelist=[429, 500, 502, 503, 504],
+            method_whitelist=["GET"],
         )
-        
+
         assert_status_hook = lambda response, *args, **kwargs: response.raise_for_status()
         http.hooks["response"] = [assert_status_hook]
 
-        http = requests.Session()
         http.mount(url, HTTPAdapter(max_retries=retries))
 
-        request = http.get(url, timeout=self.timeout)
+        if kwargs:
+            request = http.get(url=url, timeout=self.timeout, params=kwargs["params"])
+        else:
+            request = http.get(url=url, timeout=self.timeout)
         return request
 
     def post(self, url: str, *args: tp.Any, **kwargs: tp.Any) -> requests.Response:
         pass
-    
