@@ -30,7 +30,7 @@ def plot_ego_network(net: tp.List[tp.Tuple[int, int]]) -> None:
     graph = nx.Graph()
     graph.add_edges_from(net)
     layout = nx.spring_layout(graph)
-    nx.draw(graph, layout, node_size=10, node_color="black", alpha=0.5)
+    nx.draw(graph, layout, node_size=10, node_color="red", alpha=0.5)
     plt.title("Ego Network", size=15)
     plt.show()
 
@@ -71,3 +71,14 @@ def describe_communities(
                     data.append([cluster_n] + [friend.get(field) for field in fields])  # type: ignore
                     break
     return pd.DataFrame(data=data, columns=["cluster"] + fields)
+
+
+if __name__ == '__main__':
+    friends = get_friends(user_id=170404944, fields='nickname')
+    friends_active = []
+    for i in friends.items:
+        if i.get("deactivated") == None:
+            friends_active.append(i.get("id"))
+    ego = ego_network(friends=friends_active,user_id=170404944)
+    plot_ego_network(ego)
+
