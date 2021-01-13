@@ -15,12 +15,12 @@ def age_predict(user_id: int) -> tp.Optional[float]:
     :param user_id: Идентификатор пользователя.
     :return: Медианный возраст пользователя.
     """
-    request = get_friends(user_id=user_id, fields=("bdate"))
+    request = get_friends(user_id=user_id, fields="bdate")
     curret_year = int(dt.datetime.now().year)
     friendsAge = []
 
     for i in request.items:
-        bdate = str((i.get("bdate")))
+        bdate = i.get("bdate")
         if bdate != None:
             bdate = bdate[-4:]
             try:
