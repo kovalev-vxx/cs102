@@ -4,12 +4,12 @@ import typing as tp
 from itertools import chain
 from string import Template
 
-import pandas as pd  # type: ignore
-from pandas import json_normalize  # type: ignore
-from tqdm import tqdm  # type: ignore
+import pandas as pd
+from pandas import json_normalize
+from tqdm import tqdm
 
-from vkapi import config, session  # type: ignore
-from vkapi.exceptions import APIError  # type: ignore
+from vkapi import config, session
+from vkapi.exceptions import APIError
 
 
 def get_posts_2500(

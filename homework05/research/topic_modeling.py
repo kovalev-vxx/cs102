@@ -1,11 +1,11 @@
-import gensim  # type: ignore
-import pyLDAvis.gensim  # type: ignore
-import pymorphy2  # type: ignore
-from gensim.corpora import Dictionary  # type: ignore
-from textacy import preprocessing  # type: ignore
-from tqdm import tqdm  # type: ignore
+import gensim
+import pyLDAvis.gensim
+import pymorphy2
+from gensim.corpora import Dictionary
+from textacy import preprocessing
+from tqdm import tqdm
 
-from vkapi.wall import get_wall_execute  # type: ignore
+from vkapi.wall import get_wall_execute
 
 
 def get_topic_model(domain: str = "", count: int = 5000, max_count: int = 1000, progress=tqdm):

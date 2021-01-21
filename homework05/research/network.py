@@ -1,10 +1,10 @@
 import typing as tp
 from collections import defaultdict
 
-import community as community_louvain  # type: ignore
-import matplotlib.pyplot as plt  # type: ignore
-import networkx as nx  # type: ignore
-import pandas as pd  # type: ignore
+import community as community_louvain
+import matplotlib.pyplot as plt
+import networkx as nx
+import pandas as pd
 
 from vkapi.friends import get_friends, get_mutual
 
@@ -75,6 +75,6 @@ def describe_communities(
 
 if __name__ == "__main__":
     friends = get_friends(user_id=170404944, fields=["nickname"]).items  # type: ignore
-    friends_active = [user["id"] for user in friends if not "deactivated" in dict(user)]  # type: ignore
+    friends_active = [user["id"] for user in friends if not "deactivated" in user]  # type: ignore
     ego = ego_network(friends=friends_active, user_id=170404944)
     plot_ego_network(ego)

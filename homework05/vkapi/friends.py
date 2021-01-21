@@ -4,18 +4,18 @@ import time
 import typing as tp
 
 import requests
-from tqdm import tqdm  # type: ignore
+from tqdm import tqdm
 
-from vkapi import config, session  # type: ignore
-from vkapi.exceptions import APIError  # type: ignore
+from vkapi import config, session
+from vkapi.exceptions import APIError
 
 QueryParams = tp.Optional[tp.Dict[str, tp.Union[str, int]]]
 
 
 @dataclasses.dataclass(frozen=True)
-class FriendsResponse:  # type: ignore
-    count: int  # type: ignore
-    items: tp.Union[tp.List[int], tp.List[tp.Dict[str, tp.Any]]]  # type: ignore
+class FriendsResponse:
+    count: int
+    items: tp.Union[tp.List[int], tp.List[tp.Dict[str, tp.Any]]]
 
 
 def get_friends(
@@ -49,10 +49,10 @@ def get_friends(
     return FriendsResponse(**response["response"])  # type :ignore
 
 
-class MutualFriends(tp.TypedDict):  # type: ignore
-    id: int  # type: ignore
-    common_friends: tp.List[int]  # type: ignore
-    common_count: int  # type: ignore
+class MutualFriends(tp.TypedDict):
+    id: int
+    common_friends: tp.List[int]
+    common_count: int
 
 
 def get_mutual(
