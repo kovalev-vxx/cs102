@@ -19,7 +19,6 @@ def ego_network(
     :param friends: Идентификаторы друзей, между которыми устанавливаются связи.
     """
     response = get_mutual(target_uids=friends, source_uid=user_id)
-    print(response)
     expected_edges = []
     for i in response:  # type: ignore
         for j in i["common_friends"]:  # type: ignore
@@ -75,11 +74,7 @@ def describe_communities(
 
 
 if __name__ == "__main__":
-    friends = list(get_friends(user_id=170404944, fields=["nickname"]).items)  # type :ignore
-    friends_active = []
-    for user in friends:
-        if not "deactivated" in user:
-            friends_active.append(user["id"])
-    # friends_active = [user["id"] for user in friends if not user.get("deactivated")]  # type :ignore
+    friends = list(get_friends(user_id=170404944, fields=["nickname"]).items)
+    friends_active = [user["id"] for user in friends if not "deactivated" in dict(user)]
     ego = ego_network(friends=friends_active, user_id=170404944)
     plot_ego_network(ego)
