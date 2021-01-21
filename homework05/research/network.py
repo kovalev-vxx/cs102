@@ -1,12 +1,11 @@
 import typing as tp
 from collections import defaultdict
 
-import community as community_louvain
-import matplotlib.pyplot as plt
-import networkx as nx
-import pandas as pd
-
-from vkapi.friends import get_friends, get_mutual
+import community as community_louvain  # type: ignore
+import matplotlib.pyplot as plt  # type: ignore
+import networkx as nx  # type: ignore
+import pandas as pd  # type: ignore
+from vkapi.friends import get_friends, get_mutual  # type: ignore
 
 
 def ego_network(
@@ -21,8 +20,8 @@ def ego_network(
     response = get_mutual(target_uids=friends, source_uid=user_id)
     expected_edges = []
     for i in response:
-        for j in i['common_friends']:
-            expected_edges.append((i["id"],j))
+        for j in i["common_friends"]:
+            expected_edges.append((i["id"], j))
     return expected_edges
 
 
@@ -73,12 +72,8 @@ def describe_communities(
     return pd.DataFrame(data=data, columns=["cluster"] + fields)
 
 
-if __name__ == '__main__':
-    friends = get_friends(user_id=170404944, fields='nickname')
-    friends_active = []
-    for i in friends.items:
-        if i.get("deactivated") == None:
-            friends_active.append(i.get("id"))
-    ego = ego_network(friends=friends_active,user_id=170404944)
+if __name__ == "__main__":
+    friends = get_friends(user_id=170404944, fields="nickname").items
+    friends_active = [user["id"] for user in friends if not user.get("deactivated")]
+    ego = ego_network(friends=friends_active, user_id=170404944)
     plot_ego_network(ego)
-
