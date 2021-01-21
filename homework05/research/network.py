@@ -74,7 +74,7 @@ def describe_communities(
 
 
 if __name__ == "__main__":
-    friends = get_friends(user_id=170404944, fields=["nickname"]).items # type: ignore
-    friends_active = [user["id"] for user in friends if not "deactivated" in dict(user)] # type: ignore
+    friends = get_friends(user_id=170404944, fields=["nickname"]).items  # type: ignore
+    friends_active = [user["id"] for user in friends if not "deactivated" in dict(user)]  # type: ignore
     ego = ego_network(friends=friends_active, user_id=170404944)
     plot_ego_network(ego)
