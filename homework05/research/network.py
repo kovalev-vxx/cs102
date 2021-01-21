@@ -78,7 +78,7 @@ if __name__ == "__main__":
     friends = get_friends(user_id=170404944, fields=["nickname"]).items  # type :ignore
     friends_active = []
     for user in friends:
-        if user.get("deactivated") == None:
+        if not "deactivated" in user:
             friends_active.append(user["id"])
     # friends_active = [user["id"] for user in friends if not user.get("deactivated")]  # type :ignore
     ego = ego_network(friends=friends_active, user_id=170404944)
