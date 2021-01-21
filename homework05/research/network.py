@@ -18,11 +18,11 @@ def ego_network(
     :param user_id: Идентификатор пользователя, для которого строится граф друзей.
     :param friends: Идентификаторы друзей, между которыми устанавливаются связи.
     """
-    response = get_mutual(target_uids=friends, source_uid=user_id)
+    response = get_mutual(target_uids=friends, source_uid=user_id)  # type :ignore
     expected_edges = []
-    for i in response:
-        for j in i["common_friends"]:
-            expected_edges.append((i["id"], j))
+    for i in response:  # type :ignore
+        for j in i["common_friends"]:  # type :ignore
+            expected_edges.append((i["id"], j))  # type :ignore
     return expected_edges
 
 
@@ -74,7 +74,7 @@ def describe_communities(
 
 
 if __name__ == "__main__":
-    friends = get_friends(user_id=170404944, fields="nickname").items
-    friends_active = [user["id"] for user in friends if not user.get("deactivated")]
+    friends = get_friends(user_id=170404944, fields=["nickname"]).items
+    friends_active = [user["id"] for user in friends if not user.get("deactivated")]  # type :ignore
     ego = ego_network(friends=friends_active, user_id=170404944)
     plot_ego_network(ego)

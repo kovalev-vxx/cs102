@@ -101,4 +101,3 @@ class FriendsTestCase(unittest.TestCase):
         end = time.time()
         self.assertGreaterEqual(end - start, 1.0, msg="Слишком много запросов в секунду")
         self.assertEqual(common_friends * n_reqs, mutual_friends)
-        
