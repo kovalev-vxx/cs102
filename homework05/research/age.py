@@ -1,9 +1,9 @@
 import datetime as dt
-from statistics import median
-import typing as tp
 import time
+import typing as tp
+from statistics import median
 
-from vkapi.friends import get_friends
+from vkapi.friends import get_friends  # type: ignore
 
 
 def age_predict(user_id: int) -> tp.Optional[float]:
