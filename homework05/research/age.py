@@ -21,9 +21,9 @@ def age_predict(user_id: int) -> tp.Optional[float]:
     friendsAge = []
 
     for i in request.items:
-        bdate = i.get("bdate")  # type :ignore
+        bdate = str(i.get("bdate"))  # type :ignore
         if bdate != None:
-            bdate = bdate[-4:]  # type :ignore
+            bdate = str(bdate[-4:])  # type :ignore
             try:
                 birthYears = int(time.strptime(bdate, "%Y").tm_year)
                 friendsAge.append(curret_year - birthYears)
