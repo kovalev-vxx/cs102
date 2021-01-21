@@ -20,7 +20,7 @@ def ego_network(
     """
     response = get_mutual(target_uids=friends, source_uid=user_id)
     expected_edges = []
-    for i in response: #type: ignore
+    for i in response:  # type: ignore
         for j in i["common_friends"]:
             expected_edges.append((i["id"], j))
     return expected_edges
