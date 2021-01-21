@@ -46,7 +46,7 @@ def get_friends(
     if "error" in response:
         raise APIError(response["error"]["error_msg"])
 
-    return FriendsResponse(**response["response"])
+    return FriendsResponse(**response["response"])  # type :ignore
 
 
 class MutualFriends(tp.TypedDict):  # type: ignore
