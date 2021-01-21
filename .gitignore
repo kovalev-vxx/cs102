@@ -9,8 +9,13 @@ __pycache__/
 .coverage
 .cache
 coverage.xml
+.pytest_cache/
 
 # Mypy cache
 .mypy_cache/
 
+# MacOSFinder_DS_store
+.DS_Store
 
+# VSC
+.vscode
