@@ -1,12 +1,12 @@
 import typing as tp
 from collections import defaultdict
 
-import community as community_louvain
-import matplotlib.pyplot as plt
-import networkx as nx
-import pandas as pd
+import community as community_louvain  # type: ignore
+import matplotlib.pyplot as plt  # type: ignore
+import networkx as nx  # type: ignore
+import pandas as pd  # type: ignore
 
-from vkapi.friends import get_friends, get_mutual
+from vkapi.friends import get_friends, get_mutual  # type: ignore
 
 
 def ego_network(
@@ -18,14 +18,19 @@ def ego_network(
     :param user_id: Идентификатор пользователя, для которого строится граф друзей.
     :param friends: Идентификаторы друзей, между которыми устанавливаются связи.
     """
-    pass
+    response = get_mutual(target_uids=friends, source_uid=user_id)  # type :ignore
+    expected_edges = []
+    for i in response:  # type :ignore
+        for j in i["common_friends"]:  # type :ignore
+            expected_edges.append((i["id"], j))  # type :ignore
+    return expected_edges
 
 
 def plot_ego_network(net: tp.List[tp.Tuple[int, int]]) -> None:
     graph = nx.Graph()
     graph.add_edges_from(net)
     layout = nx.spring_layout(graph)
-    nx.draw(graph, layout, node_size=10, node_color="black", alpha=0.5)
+    nx.draw(graph, layout, node_size=10, node_color="red", alpha=0.5)
     plt.title("Ego Network", size=15)
     plt.show()
 
@@ -66,3 +71,10 @@ def describe_communities(
                     data.append([cluster_n] + [friend.get(field) for field in fields])  # type: ignore
                     break
     return pd.DataFrame(data=data, columns=["cluster"] + fields)
+
+
+if __name__ == "__main__":
+    friends = get_friends(user_id=170404944, fields=["nickname"]).items
+    friends_active = [user["id"] for user in friends if not user.get("deactivated")]  # type :ignore
+    ego = ego_network(friends=friends_active, user_id=170404944)
+    plot_ego_network(ego)
