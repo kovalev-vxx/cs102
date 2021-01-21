@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt  # type: ignore
 import networkx as nx  # type: ignore
 import pandas as pd  # type: ignore
 
-from vkapi.friends import get_friends, get_mutual  # type: ignore
+from vkapi.friends import get_friends, get_mutual
 
 
 def ego_network(
@@ -18,11 +18,11 @@ def ego_network(
     :param user_id: Идентификатор пользователя, для которого строится граф друзей.
     :param friends: Идентификаторы друзей, между которыми устанавливаются связи.
     """
-    response = get_mutual(target_uids=friends, source_uid=user_id)
+    response = get_mutual(target_uids=friends, source_uid=user_id) # type: ignore
     expected_edges = []
     for i in response:  # type: ignore
-        for j in i["common_friends"]:
-            expected_edges.append((i["id"], j))
+        for j in i["common_friends"]: # type: ignore
+            expected_edges.append((i["id"], j)) # type: ignore
     return expected_edges
 
 

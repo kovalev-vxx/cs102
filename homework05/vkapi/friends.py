@@ -13,9 +13,9 @@ QueryParams = tp.Optional[tp.Dict[str, tp.Union[str, int]]]
 
 
 @dataclasses.dataclass(frozen=True)
-class FriendsResponse:
-    count: int
-    items: tp.Union[tp.List[int], tp.List[tp.Dict[str, tp.Any]]]
+class FriendsResponse: # type: ignore
+    count: int # type: ignore
+    items: tp.Union[tp.List[int], tp.List[tp.Dict[str, tp.Any]]] # type: ignore
 
 
 def get_friends(
@@ -49,10 +49,10 @@ def get_friends(
     return FriendsResponse(**response["response"])
 
 
-class MutualFriends(tp.TypedDict):
-    id: int
-    common_friends: tp.List[int]
-    common_count: int
+class MutualFriends(tp.TypedDict): # type: ignore
+    id: int # type: ignore
+    common_friends: tp.List[int] # type: ignore
+    common_count: int # type: ignore
 
 
 def get_mutual(
