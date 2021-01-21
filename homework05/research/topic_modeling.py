@@ -4,6 +4,7 @@ import pymorphy2  # type: ignore
 from gensim.corpora import Dictionary  # type: ignore
 from textacy import preprocessing  # type: ignore
 from tqdm import tqdm  # type: ignore
+
 from vkapi.wall import get_wall_execute  # type: ignore
 
 
