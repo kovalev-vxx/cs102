@@ -2,11 +2,12 @@ import dataclasses
 import math
 import time
 import typing as tp
-import requests
-from tqdm import tqdm
 
-from vkapi import config, session
-from vkapi.exceptions import APIError
+import requests
+from tqdm import tqdm  # type: ignore
+
+from vkapi import config, session  # type: ignore
+from vkapi.exceptions import APIError  # type: ignore
 
 QueryParams = tp.Optional[tp.Dict[str, tp.Union[str, int]]]
 
@@ -105,7 +106,7 @@ def get_mutual(
                     time.sleep(1 / 3)
 
                 for arg in response["response"]:
-                    response_info.append(MutualFriends(arg))
+                    response_info.append(MutualFriends(arg))  # type: ignore
             pbar.close()
     else:
 
