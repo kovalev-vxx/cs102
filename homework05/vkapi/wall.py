@@ -42,11 +42,7 @@ def get_posts_2500(
 
     response = session.post(
         url="execute",
-        data={
-            "code": code,
-            "access_token": config.VK_CONFIG["access_token"],
-            "v": config.VK_CONFIG["version"],
-        },
+        data={"code": code, "access_token": config.VK_CONFIG["access_token"], "v": config.VK_CONFIG["version"]},
         timeout=20.0,
     ).json()
 

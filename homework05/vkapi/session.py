@@ -28,7 +28,7 @@ class Session(requests.Session):
         self.max_retries = max_retries
         self.backoff_factor = backoff_factor
 
-    def get(self, url: str, *args: tp.Any, **kwargs: tp.Any) -> requests.Response:  # type: ignore
+    def get(self, url: str, *args: tp.Any, **kwargs: tp.Any) -> requests.Response: #type: ignore
         url = f"{self.base_url}/{url}"
 
         http = requests.Session()
@@ -51,7 +51,7 @@ class Session(requests.Session):
             request = http.get(url=url, timeout=self.timeout)
         return request
 
-    def post(self, url: str, *args: tp.Any, **kwargs: tp.Any) -> requests.Response:  # type: ignore
+    def post(self, url: str, *args: tp.Any, **kwargs: tp.Any) -> requests.Response: #type: ignore
         url = f"{self.base_url}/{url}"
 
         http = requests.Session()

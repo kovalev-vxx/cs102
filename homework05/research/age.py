@@ -3,8 +3,7 @@ import time
 import typing as tp
 from statistics import median
 
-# type: ignore
-from vkapi.friends import get_friends
+from vkapi.friends import get_friends  # type: ignore
 
 
 def age_predict(user_id: int) -> tp.Optional[float]:
@@ -16,14 +15,14 @@ def age_predict(user_id: int) -> tp.Optional[float]:
     :param user_id: Идентификатор пользователя.
     :return: Медианный возраст пользователя.
     """
-    request = get_friends(user_id=user_id, fields=["bdate"])
+    request = get_friends(user_id=user_id, fields="bdate")
     curret_year = int(dt.datetime.now().year)
     friendsAge = []
 
     for i in request.items:
-        bdate = i.get("bdate")  # type :ignore
+        bdate = i.get("bdate")
         if bdate != None:
-            bdate = bdate[-4:]  # type :ignore
+            bdate = bdate[-4:]
             try:
                 birthYears = int(time.strptime(bdate, "%Y").tm_year)
                 friendsAge.append(curret_year - birthYears)
