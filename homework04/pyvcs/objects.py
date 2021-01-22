@@ -41,11 +41,7 @@ def resolve_object(obj_name: str, gitdir: pathlib.Path) -> tp.List[str]:
             else:
                 raise Exception(f"Not a valid object name {obj_name}")
     return result
-
-
-def find_object(obj_name: str, gitdir: pathlib.Path) -> str:
-    ...
-
+    
 
 def read_object(sha: str, gitdir: pathlib.Path) -> tp.Tuple[str, bytes]:
     path = repo_find(gitdir) / "objects" / sha[:2]
