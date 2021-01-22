@@ -17,19 +17,19 @@ def age_predict(user_id: int) -> tp.Optional[float]:
     """
     request = get_friends(user_id=user_id, fields=["bdate"])
     curret_year = int(dt.datetime.now().year)
-    friendsAge = []
+    friends_age = []
 
     for i in list(request.items):
         bdate = str(i.get("bdate"))  # type: ignore
         if bdate != None:
             bdate = str(bdate[-4:])  # type: ignore
             try:
-                birthYears = int(time.strptime(bdate, "%Y").tm_year)
-                friendsAge.append(curret_year - birthYears)
+                birth_years = int(time.strptime(bdate, "%Y").tm_year)
+                friends_age.append(curret_year - birth_years)
             except (ValueError):
                 pass
-    if len(friendsAge) == 0:
+    if len(friends_age) == 0:
         return None
     else:
-        predict = median(sorted(friendsAge))
+        predict = median(sorted(friends_age))
         return predict
