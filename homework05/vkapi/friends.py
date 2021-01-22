@@ -43,7 +43,7 @@ def get_friends(
 
     response = session.get(url="friends.get", params=params).json()
 
-    if "error" in response:
+    if "error" in response or not response.ok:
         raise APIError(response["error"]["error_msg"])
 
     return FriendsResponse(**response["response"])  # type :ignore
@@ -97,7 +97,7 @@ def get_mutual(
 
                 response = session.get(url="friends.getMutual", params=params).json()
 
-                if "error" in response:
+                if "error" in response or not response.ok:
                     raise APIError(response["error"]["error_msg"])
 
                 pbar.update(1)
@@ -122,7 +122,7 @@ def get_mutual(
 
         response_info = session.get(url="friends.getMutual", params=params).json()["response"]
 
-        if "error" in response_info:
+        if "error" in response_info or not response.ok:
             raise APIError(response["error"]["error_msg"])
 
     return response_info

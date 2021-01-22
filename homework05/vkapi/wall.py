@@ -50,7 +50,7 @@ def get_posts_2500(
         timeout=20.0,
     ).json()
 
-    if "error" in response:
+    if "error" in response or not response.ok:
         raise APIError(response["error"]["error_msg"])
 
     response = list(chain.from_iterable(response["response"]))
@@ -94,7 +94,7 @@ def get_wall_execute(
             },
             timeout=20.0,
         ).json()
-        if "error" in response:
+        if "error" in response or not response.ok:
             raise APIError(response["error"]["error_msg"])
         else:
             return response["response"]
