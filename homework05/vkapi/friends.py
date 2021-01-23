@@ -99,7 +99,7 @@ def get_mutual(
                 response = session.get(url="friends.getMutual", params=params)
                 doc = response.json()
 
-                if "error" in response or not response.ok:
+                if "error" in doc or not response.ok:
                     raise APIError(doc["error"]["error_msg"])
 
                 pbar.update(1)
