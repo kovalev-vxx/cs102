@@ -48,10 +48,11 @@ def get_posts_2500(
             "v": config.VK_CONFIG["version"],
         },
         timeout=20.0,
-    ).json()
+    )
+    doc = response.json()
 
-    if "error" in response or not response.ok:
-        raise APIError(response["error"]["error_msg"])
+    if "error" in doc or not response.ok:
+        raise APIError(doc["error"]["error_msg"])
 
     response = list(chain.from_iterable(response["response"]))
     return response
@@ -93,11 +94,12 @@ def get_wall_execute(
                 "v": config.VK_CONFIG["version"],
             },
             timeout=20.0,
-        ).json()
-        if "error" in response or not response.ok:
-            raise APIError(response["error"]["error_msg"])
+        )
+        doc = response.json()
+        if "error" in doc or not response.ok:
+            raise APIError(doc["error"]["error_msg"])
         else:
-            return response["response"]
+            return doc["response"]
 
     total_count = get_wall_info(
         f"""var docs=API.wall.get({{"domain":"{domain}","count":"{count}"}});return docs.count;"""
