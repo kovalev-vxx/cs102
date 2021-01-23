@@ -63,8 +63,24 @@ def decrypt_caesar(ciphertext: str, shift: int = 3) -> str:
 
 def caesar_breaker_brute_force(ciphertext: str, dictionary: tp.Set[str]) -> int:
     """
-    Brute force breaking a Caesar cipher.
+    >>> d = {"python", "java", "ruby"}
+    >>> caesar_breaker("python", d)
+    0
+    >>> caesar_breaker("sbwkrq", d)
+    3
     """
     best_shift = 0
+    lengths_of_keywords = [len(x) for x in dictionary]
+    if ciphertext in dictionary:
+        return best_shift
 
+    if len(ciphertext) not in lengths_of_keywords:
+        raise KeyError("Такого слова нет в словаре")
+
+    check_word = ""
+    while check_word not in dictionary:
+        best_shift += 1
+        check_word = decrypt_caesar(ciphertext, best_shift)
+        if check_word == ciphertext:
+            raise KeyError("Такого слова нет в словаре")
     return best_shift
