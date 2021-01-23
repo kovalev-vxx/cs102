@@ -4,6 +4,7 @@ import typing as tp
 
 
 def repo_find(workdir: tp.Union[str, pathlib.Path] = ".") -> pathlib.Path:
+
     if workdir == ".":
         workdir = pathlib.Path(".")
     if isinstance(workdir, str):
@@ -20,35 +21,23 @@ def repo_find(workdir: tp.Union[str, pathlib.Path] = ".") -> pathlib.Path:
 
 
 def repo_create(workdir: tp.Union[str, pathlib.Path]) -> pathlib.Path:
+
     if not os.getenv("GIT_DIR"):
         os.environ["GIT_DIR"] = ".git"
-    dir_name = os.environ["GIT_DIR"]
-
-    if isinstance(workdir, str):
-        path = pathlib.Path(workdir) / dir_name
+    workdir = pathlib.Path(workdir)
+    if pathlib.Path.is_file(workdir):
+        raise Exception(f"{workdir} is not a directory")
     else:
-        path = workdir / dir_name
-
-    try:
-        os.mkdir(path)
-    except OSError:
-        assert isinstance(workdir, pathlib.PosixPath)
-        raise Exception(f"{workdir.name} is not a directory")
-
-    os.mkdir(path / "refs")
-    os.mkdir(path / "refs" / "heads")
-    os.mkdir(path / "refs" / "tags")
-    os.mkdir(path / "objects")
-
-    with open(path / "HEAD", "w+") as f:
-        f.write("ref: refs/heads/master\n")
-
-    with open(path / "config", "w+") as f:
-        f.write(
-            "[core]\n\trepositoryformatversion = 0\n\tfilemode = true\n\tbare = false\n\tlogallrefupdates = false\n"
-        )
-
-    with open(path / "description", "w+") as f:
-        f.write("Unnamed pyvcs repository.\n")
-
-    return path
+        os.makedirs(f'{workdir}/{os.environ["GIT_DIR"]}')
+        os.makedirs(f'{workdir}/{os.environ["GIT_DIR"]}/refs/heads')
+        os.makedirs(f'{workdir}/{os.environ["GIT_DIR"]}/refs/tags')
+        os.makedirs(f'{workdir}/{os.environ["GIT_DIR"]}/objects')
+        with open(f'{workdir}/{os.environ["GIT_DIR"]}/HEAD', "w") as f:
+            f.write("ref: refs/heads/master\n")
+        with open(f'{workdir}/{os.environ["GIT_DIR"]}/config', "w") as f:
+            f.write(
+                "[core]\n\trepositoryformatversion = 0\n\tfilemode = true\n\tbare = false\n\tlogallrefupdates = false\n"
+            )
+        with open(f'{workdir}/{os.environ["GIT_DIR"]}/description', "w") as f:
+            f.write("Unnamed pyvcs repository.\n")
+        return pathlib.Path(workdir / os.environ["GIT_DIR"])

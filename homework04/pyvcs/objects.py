@@ -11,24 +11,25 @@ from pyvcs.repo import repo_find
 
 
 def hash_object(data: bytes, fmt: str, write: bool = False) -> str:
+
+    if not os.getenv("GIT_DIR"):
+        os.environ["GIT_DIR"] = ".git"
     header = f"{fmt} {len(data)}\0"
     store = header.encode() + data
-    hash_name = hashlib.sha1(store).hexdigest()
-
+    hash_file = hashlib.sha1(store).hexdigest()
     if write:
-        path = repo_find() / "objects" / hash_name[:2]
-
-        if os.path.exists(path / hash_name[2:]):
-            return hash_name
-
-        os.mkdir(path)
-        with open(path / hash_name[2:], "wb") as f:
+        path = pathlib.Path(f'{os.environ["GIT_DIR"]}/objects').absolute() / hash_file[:2]
+        if not os.path.exists(path):
+            os.makedirs(path)
+            f = open(f"{path}/{hash_file[2:]}", "wb")
             f.write(zlib.compress(store))
+            f.close()
 
-    return hash_name
+    return hash_file
 
 
 def resolve_object(obj_name: str, gitdir: pathlib.Path) -> tp.List[str]:
+
     if len(obj_name) < 4 or len(obj_name) > 40:
         raise Exception(f"Not a valid object name {obj_name}")
 
@@ -48,6 +49,7 @@ def find_object(obj_name: str, gitdir: pathlib.Path) -> str:
 
 
 def read_object(sha: str, gitdir: pathlib.Path) -> tp.Tuple[str, bytes]:
+
     path = repo_find(gitdir) / "objects" / sha[:2]
     with open(path / sha[2:], mode="rb") as f:
         obj_data = zlib.decompress(f.read())
@@ -60,6 +62,7 @@ def read_object(sha: str, gitdir: pathlib.Path) -> tp.Tuple[str, bytes]:
 
 
 def read_tree(data: bytes) -> tp.List[tp.Tuple[int, str, str]]:
+
     result = []
     while len(data) != 0:
         mode = int(data[: data.find(b" ")].decode())
@@ -73,6 +76,7 @@ def read_tree(data: bytes) -> tp.List[tp.Tuple[int, str, str]]:
 
 
 def cat_file(obj_name: str, pretty: bool = True) -> None:
+
     gitdir = repo_find(".")
     if len(resolve_object(obj_name, gitdir)) != 0:
         header, content = read_object(obj_name, gitdir)
@@ -90,6 +94,7 @@ def cat_file(obj_name: str, pretty: bool = True) -> None:
 
 
 def find_tree_files(tree_sha: str, gitdir: pathlib.Path) -> tp.List[tp.Tuple[str, str]]:
+
     result = []
     header, data = read_object(tree_sha, gitdir)
     for file in read_tree(data):
@@ -104,5 +109,6 @@ def find_tree_files(tree_sha: str, gitdir: pathlib.Path) -> tp.List[tp.Tuple[str
 
 
 def commit_parse(raw: bytes, start: int = 0, dct=None):
+
     data = zlib.decompress(raw)
     return data[data.find(b"tree") + 5 : data.find(b"tree") + 45]

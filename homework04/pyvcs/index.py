@@ -25,8 +25,10 @@ class GitIndexEntry(tp.NamedTuple):
     name: str
 
     def pack(self) -> bytes:
-        name_length = len(self.name)
-        values = (
+
+        b_name = self.name.encode()
+        head = struct.pack(
+            "!LLLLLLLLLL20sH",
             self.ctime_s,
             self.ctime_n,
             self.mtime_s,
@@ -39,18 +41,17 @@ class GitIndexEntry(tp.NamedTuple):
             self.size,
             self.sha1,
             self.flags,
-            self.name.encode(),
         )
-        packed = struct.pack(
-            "!LLLLLLLLLL20sH%ds%dx" % (name_length, 8 - ((62 + name_length) % 8)), *values
-        )
-        return packed
+        N = 8 - (62 + len(self.name)) % 8
+        packed_data = head + b_name + b"\x00" * N
+
+        return packed_data
 
     @staticmethod
     def unpack(data: bytes) -> "GitIndexEntry":
-        name_length = len(data[62:])
+
         head = struct.unpack("!LLLLLLLLLL20sH", data[:62])
-        name = struct.unpack("!%ss" % name_length, data[62:])[0]
+        name = struct.unpack("!%ss" % len(data[62:]), data[62:])[0]
         name = name.strip(b"\x00").decode()
         return GitIndexEntry(*(head + (name,)))
 
