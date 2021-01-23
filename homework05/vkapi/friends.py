@@ -41,12 +41,13 @@ def get_friends(
         "offset": offset,
     }
 
-    response = session.get(url="friends.get", params=params).json()
+    response = session.get(url="friends.get", params=params)
+    doc = response.json()
 
-    if "error" in response or not response.ok:
-        raise APIError(response["error"]["error_msg"])
+    if "error" in doc or not response.ok:
+        raise APIError(doc["error"]["error_msg"])
 
-    return FriendsResponse(**response["response"])  # type :ignore
+    return FriendsResponse(**doc["response"])  # type :ignore
 
 
 class MutualFriends(tp.TypedDict):
@@ -95,17 +96,18 @@ def get_mutual(
                     "offset": offset + i * 100,
                 }
 
-                response = session.get(url="friends.getMutual", params=params).json()
+                response = session.get(url="friends.getMutual", params=params)
+                doc = response.json()
 
                 if "error" in response or not response.ok:
-                    raise APIError(response["error"]["error_msg"])
+                    raise APIError(doc["error"]["error_msg"])
 
                 pbar.update(1)
 
                 if count_of_iter > 1:
                     time.sleep(1 / 3)
 
-                for arg in response["response"]:
+                for arg in doc["response"]:
                     response_info.append(MutualFriends(arg))  # type: ignore
             pbar.close()
     else:
@@ -120,9 +122,12 @@ def get_mutual(
             "offset": offset,
         }
 
-        response_info = session.get(url="friends.getMutual", params=params).json()["response"]
+        response = session.get(url="friends.getMutual", params=params)
+        response_info = response.json()
 
         if "error" in response_info or not response.ok:
-            raise APIError(response["error"]["error_msg"])
+            raise APIError(response_info["error"]["error_msg"])
+
+        return response_info["response"]
 
     return response_info
