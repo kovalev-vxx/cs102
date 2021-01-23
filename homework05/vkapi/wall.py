@@ -54,8 +54,8 @@ def get_posts_2500(
     if "error" in doc or not response.ok:
         raise APIError(doc["error"]["error_msg"])
 
-    response = list(chain.from_iterable(response["response"]))
-    return response
+    response = list(chain.from_iterable(response["response"]))  # type: ignore
+    return response  # type: ignore
 
 
 def get_wall_execute(
