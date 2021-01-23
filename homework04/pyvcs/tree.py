@@ -10,24 +10,41 @@ from pyvcs.refs import get_ref, is_detached, resolve_head, update_ref
 
 
 def write_tree(gitdir: pathlib.Path, index: tp.List[GitIndexEntry], dirname: str = "") -> str:
-    records = b""
+    tree_content: tp.List[tp.Tuple[int, str, bytes]] = []
+    subtrees: tp.Dict[str, tp.List[GitIndexEntry]] = dict()
+    files = []
+    for x in (gitdir.parent / dirname).glob("*"):
+        files.append(str(x))
     for entry in index:
-        if "/" in entry.name:
-            records += b"40000 "
-            subdir_files = b""
-            dir_name = entry.name[: entry.name.find("/")]
-            records += dir_name.encode() + b"\0"
-            subdir_files += oct(entry.mode)[2:].encode() + b" "
-            subdir_files += entry.name[entry.name.find("/") + 1 :].encode() + b"\0"
-            subdir_files += entry.sha1
-            blob_hash = hash_object(subdir_files, fmt="tree", write=True)
-            records += bytes.fromhex(blob_hash)
+        if entry.name in files:
+            tree_content.append((entry.mode, str(gitdir.parent / entry.name), entry.sha1))
         else:
-            records += oct(entry.mode)[2:].encode() + b" "
-            records += entry.name.encode() + b"\0"
-            records += entry.sha1
-    tree_name = hash_object(records, fmt="tree", write=True)
-    return tree_name
+            dname = entry.name.lstrip(dirname).split("/", 1)[0]
+            if not dname in subtrees:
+                subtrees[dname] = []
+            subtrees[dname].append(entry)
+    for name in subtrees:
+        if dirname != "":
+            tree_content.append(
+                (
+                    0o40000,
+                    str(gitdir.parent / dirname / name),
+                    bytes.fromhex(write_tree(gitdir, subtrees[name], dirname + "/" + name)),
+                )
+            )
+        else:
+            tree_content.append(
+                (
+                    0o40000,
+                    str(gitdir.parent / dirname / name),
+                    bytes.fromhex(write_tree(gitdir, subtrees[name], name)),
+                )
+            )
+    tree_content.sort(key=lambda x: x[1])
+    data = b"".join(
+        f"{elem[0]:o} {elem[1].split('/')[-1]}".encode() + b"\00" + elem[2] for elem in tree_content
+    )
+    return hash_object(data, "tree", write=True)
 
 
 def commit_tree(
