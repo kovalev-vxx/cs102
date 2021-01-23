@@ -70,17 +70,21 @@ def caesar_breaker_brute_force(ciphertext: str, dictionary: tp.Set[str]) -> int:
     3
     """
     best_shift = 0
-    lengths_of_keywords = [len(x) for x in dictionary]
-    if ciphertext in dictionary:
-        return best_shift
+    ciphertext = ciphertext.split()  # type: ignore
+    shift = 0
+    max_score = 0
+    en_alphabet_count = 26
 
-    if len(ciphertext) not in lengths_of_keywords:
-        raise KeyError("Такого слова нет в словаре")
+    while shift < en_alphabet_count:
+        score = 0
+        shift += 1
+        check_words = [encrypt_caesar(word, shift) for word in ciphertext]
+        for i in check_words:
+            if i in dictionary:
+                score += 1
 
-    check_word = ""
-    while check_word not in dictionary:
-        best_shift += 1
-        check_word = decrypt_caesar(ciphertext, best_shift)
-        if check_word == ciphertext:
-            raise KeyError("Такого слова нет в словаре")
+        if max_score < score:
+            max_score = score
+            best_shift = en_alphabet_count - shift
+
     return best_shift
