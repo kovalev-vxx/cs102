@@ -3,6 +3,9 @@ import math
 import time
 import typing as tp
 
+import requests
+from tqdm import tqdm
+
 from vkapi import config, session
 from vkapi.exceptions import APIError
 
@@ -28,7 +31,23 @@ def get_friends(
     :param fields: Список полей, которые нужно получить для каждого пользователя.
     :return: Список идентификаторов друзей пользователя или список пользователей.
     """
-    pass
+
+    params = {
+        "access_token": config.VK_CONFIG["access_token"],
+        "v": config.VK_CONFIG["version"],
+        "user_id": user_id,
+        "fields": fields,
+        "count": count,
+        "offset": offset,
+    }
+
+    response = session.get(url="friends.get", params=params)
+    doc = response.json()
+
+    if "error" in doc or not response.ok:
+        raise APIError(doc["error"]["error_msg"])
+
+    return FriendsResponse(**doc["response"])  # type: ignore
 
 
 class MutualFriends(tp.TypedDict):
@@ -57,4 +76,58 @@ def get_mutual(
     :param offset: Смещение, необходимое для выборки определенного подмножества общих друзей.
     :param progress: Callback для отображения прогресса.
     """
-    pass
+
+    if target_uids:
+
+        count_of_iter = (len(target_uids) + 99) // 100
+
+        response_info = []
+
+        with tqdm(total=count_of_iter, disable=True if progress is None else False) as pbar:
+            for i in range(0, count_of_iter):
+
+                params = {
+                    "access_token": config.VK_CONFIG["access_token"],
+                    "source_uid": source_uid if source_uid is not None else "",
+                    "v": config.VK_CONFIG["version"],
+                    "target_uids": str(target_uids)[1:-1],
+                    "order": order,
+                    "count": count if count is not None else "",
+                    "offset": offset + i * 100,
+                }
+
+                response = session.get(url="friends.getMutual", params=params)
+                doc = response.json()
+
+                if "error" in response or not response.ok:  # type: ignore
+                    raise APIError(doc["error"]["error_msg"])  # type: ignore
+
+                pbar.update(1)
+
+                if count_of_iter > 1:
+                    time.sleep(1 / 3)
+
+                for arg in doc["response"]:
+                    response_info.append(MutualFriends(arg))  # type: ignore
+            pbar.close()
+    else:
+
+        params = {
+            "access_token": config.VK_CONFIG["access_token"],
+            "v": config.VK_CONFIG["version"],
+            "source_uid": source_uid if source_uid is not None else "",
+            "target_uid": target_uid,
+            "order": order,
+            "count": count if count is not None else "",
+            "offset": offset,
+        }
+
+        response = session.get(url="friends.getMutual", params=params)
+        response_info = response.json()
+
+        if "error" in response_info or not response.ok:
+            raise APIError(response_info["error"]["error_msg"])  # type: ignore
+
+        return response_info["response"]  # type: ignore
+
+    return response_info
