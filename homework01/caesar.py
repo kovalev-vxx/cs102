@@ -78,13 +78,13 @@ def caesar_breaker_brute_force(ciphertext: str, dictionary: tp.Set[str]) -> int:
     while shift < en_alphabet_count:
         score = 0
         shift += 1
-        check_words = [encrypt_caesar(word, shift) for word in ciphertext]
+        check_words = [decrypt_caesar(word, shift) for word in ciphertext]
         for i in check_words:
             if i in dictionary:
                 score += 1
 
         if max_score < score:
             max_score = score
-            best_shift = en_alphabet_count - shift
+            best_shift = shift
 
     return best_shift
