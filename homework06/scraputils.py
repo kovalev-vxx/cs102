@@ -5,15 +5,39 @@ from bs4 import BeautifulSoup
 def extract_news(parser):
     """ Extract news from a given web page """
     news_list = []
+    news = parser.find_all(class_="storylink")
+    subtext = parser.find_all(class_="subtext")
 
-    # PUT YOUR CODE HERE
+    for i in range(len(news)):
+        url = news[i]["href"]
+        title = news[i].get_text()
 
+        sub_item = subtext[i]
+
+        points = sub_item.find(class_="score")
+        if points:
+            points = int(points.get_text().split()[0])
+
+        author = sub_item.find(class_="hnuser")
+        if author:
+            author = author.get_text()
+
+        comments = sub_item.findAll("a", href=True)[-1].get_text().split()
+        if "comments" in comments:
+            comments = int(comments[0])
+        else:
+            comments = None
+
+        news_list.append(
+            [{"author": author, "comments": comments, "points": points, "title": title, "url": url}]
+        )
     return news_list
 
 
 def extract_next_page(parser):
     """ Extract next page URL """
-    # PUT YOUR CODE HERE
+    link = parser.find(class_="morelink")["href"]
+    return str(link)
 
 
 def get_news(url, n_pages=1):
@@ -29,4 +53,3 @@ def get_news(url, n_pages=1):
         news.extend(news_list)
         n_pages -= 1
     return news
-
