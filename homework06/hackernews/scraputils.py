@@ -17,6 +17,8 @@ def extract_news(parser):
         points = sub_item.find(class_="score")
         if points:
             points = int(points.get_text().split()[0])
+        else:
+            points = 0
 
         author = sub_item.find(class_="hnuser")
         if author:
@@ -26,10 +28,10 @@ def extract_news(parser):
         if "comments" in comments:
             comments = int(comments[0])
         else:
-            comments = None
+            comments = 0
 
         news_list.append(
-            [{"author": author, "comments": comments, "points": points, "title": title, "url": url}]
+            {"author": author, "comments": comments, "points": points, "title": title, "url": url}
         )
     return news_list
 
