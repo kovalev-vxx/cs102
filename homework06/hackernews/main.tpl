@@ -17,7 +17,6 @@
             <div style="text-align: center; font-size: xx-large;">🌏 Hacker News 👨‍💻</div>
             <div class="ui section divider"></div>
             <a href="/news" class="small ui primary button">Go news</a>
-            <a href="/news_labeled" class="small ui primary button">Check labeled news!</a>
             <a href="/recommendations" class="small ui primary button">Personal recommendations</a>
             <p></p>
             <a class="profile" href="https://github.com/kovalev-vxx" target="_blank"><h2 class="ui icon header" style="text-align: center;">@kovalev.vxx</h2></a>
