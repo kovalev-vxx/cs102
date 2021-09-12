@@ -68,3 +68,10 @@ def clear_without_label_news(session):
         session.delete(item)
     session.commit()
     session.close()
+
+def clear_labels(session):
+    news_with_labels = session.query(News).filter(News.label != None).all()
+    for item in news_with_labels:
+        item.label = None
+    session.commit()
+    session.close()
