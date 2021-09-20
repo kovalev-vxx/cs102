@@ -95,5 +95,10 @@ class NaiveBayesClassifier:
 
     def score(self, X_test, y_test):
         """ Returns the mean accuracy on the given test data and labels. """
-        pass
+        predicted_classes = self.predict((X_test))["pred_class"]
+        score = 0
+        for predicted, real in zip(predicted_classes, y_test):
+            if predicted == real:
+                score += 1
+        return score / len(y_test)
 
