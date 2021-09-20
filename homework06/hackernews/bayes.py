@@ -69,8 +69,33 @@ class NaiveBayesClassifier:
         return self.fitted_words
 
     def predict(self, X):
-        """ Perform classification on an array of test vectors X. """
-        pass
+        predicted_docs = {}
+        predicted_docs["docs"] = []
+        predicted_docs["pred_class"] = []
+
+        for doc in X:
+            predicted_class = {}
+            for cl in self.pb_of_classes:
+                predicted_class[cl] = []
+                pb_of_class = self.pb_of_classes[cl]
+                for word in lower((clear(doc)).split(' ')):
+                    try:
+                        index = self.fitted_words["words"].index(word)
+                        predicted_class[cl].append(ln(self.fitted_words[cl][index]))
+                    except ValueError:
+                        predicted_class[cl].append(0)
+
+                predicted_class[cl].append(ln(self.pb_of_classes[cl]))
+
+            for cl in predicted_class:
+                predicted_class[cl] = sum(predicted_class[cl])
+
+            predicted_class = max(predicted_class, key=predicted_class.get)
+
+            predicted_docs["docs"].append(doc)
+            predicted_docs["pred_class"].append(predicted_class)
+
+        return predicted_docs
 
     def score(self, X_test, y_test):
         """ Returns the mean accuracy on the given test data and labels. """
