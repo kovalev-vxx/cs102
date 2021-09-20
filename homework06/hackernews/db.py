@@ -4,9 +4,8 @@ from bs4.element import Comment
 from requests import __title__
 from sqlalchemy.sql.expression import label
 
-from tqdm import tqdm
 from scraputils import get_news
-from sqlalchemy import Column, Integer, String, create_engine, delete
+from sqlalchemy import Column, Integer, String, Float, create_engine, delete
 from sqlalchemy.engine.base import Engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker

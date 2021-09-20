@@ -61,8 +61,10 @@ def labeled_news_list():
 
 @route("/classify")
 def classify_news():
-    # PUT YOUR CODE HERE
-    pass
+    s = get_session(engine)
+    model = NaiveBayesClassifier(alpha=1)
+    labeled_news = s.query(News).filter(News.label != None).all()
+    redirect(".")
 
 
 if __name__ == "__main__":

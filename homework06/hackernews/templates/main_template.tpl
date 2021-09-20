@@ -19,6 +19,7 @@
             <a href="/news" class="small ui primary button">Go news</a>
             <a href="/recommendations" class="small ui primary button">Personal recommendations</a>
             <a href="/labeled_news" class="small ui primary button">Labeled News</a>
+            <a href="/classify" class="small ui primary button">Start Bayes</a>
             <p></p>
             <a class="profile" href="https://github.com/kovalev-vxx" target="_blank"><h2 class="ui icon header" style="text-align: center;">@kovalev.vxx</h2></a>
         </div>
