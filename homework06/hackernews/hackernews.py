@@ -37,7 +37,7 @@ def add_label():
     redirect("/news")
 
 @route("/change_label/")
-def add_label():
+def change_label():
     s = get_session(engine)
     id = request.query["id"]
     label = request.query["label"]
@@ -62,9 +62,31 @@ def labeled_news_list():
 @route("/classify")
 def classify_news():
     s = get_session(engine)
-    model = NaiveBayesClassifier(alpha=1)
+    model = NaiveBayesClassifier(alpha=0.05)
     labeled_news = s.query(News).filter(News.label != None).all()
-    redirect(".")
+    if len(labeled_news) == 0:
+        redirect(".")
+    unlabeled_news = s.query(News).filter(News.label == None).all()
+
+    X, y = [], []
+    for news in labeled_news:
+        X.append(news.title)
+        y.append(news.label)
+
+    model.fit(X, y)
+
+    pr_news = model.predict([news.title for news in unlabeled_news])
+    liked_news = []
+    maybe_news = []
+
+    for cl,news in zip(pr_news["pred_class"], unlabeled_news):
+        if cl == "like":
+            liked_news.append(news)
+        elif cl == "maybe":
+            maybe_news.append(news)
+
+
+    return template('templates/recommendations.tpl', liked_news=liked_news, maybe_news = maybe_news)
 
 
 if __name__ == "__main__":
