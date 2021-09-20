@@ -1,5 +1,6 @@
+from math import log as ln
+from collections import Counter
 from string import punctuation, digits
-from collections import defaultdict, Counter
 
 
 def clear(doc):
@@ -37,8 +38,7 @@ class NaiveBayesClassifier:
                     docs_sorted_by_class[cl].append(doc)
 
         words_sorted_by_class = {}
-        pb_of_words = {}
-        pb_of_words["words"] = []
+        pb_of_words = {"words": []}
         counter_words = {}
 
         for cl in classes:
@@ -69,22 +69,18 @@ class NaiveBayesClassifier:
         return self.fitted_words
 
     def predict(self, X):
-        predicted_docs = {}
-        predicted_docs["docs"] = []
-        predicted_docs["pred_class"] = []
+        predicted_docs = dict(docs=[], pred_class=[])
 
         for doc in X:
             predicted_class = {}
             for cl in self.pb_of_classes:
                 predicted_class[cl] = []
-                pb_of_class = self.pb_of_classes[cl]
                 for word in lower((clear(doc)).split(' ')):
                     try:
                         index = self.fitted_words["words"].index(word)
                         predicted_class[cl].append(ln(self.fitted_words[cl][index]))
                     except ValueError:
                         predicted_class[cl].append(0)
-
                 predicted_class[cl].append(ln(self.pb_of_classes[cl]))
 
             for cl in predicted_class:
