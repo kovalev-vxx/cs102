@@ -65,9 +65,7 @@ class NaiveBayesClassifier:
                     )
                     pb_of_words[cl].append(pb)
                 else:
-                    pb = (self.alpha) / (
-                        len(words_sorted_by_class[cl]) + d * self.alpha
-                    )
+                    pb = (self.alpha) / (len(words_sorted_by_class[cl]) + d * self.alpha)
                     pb_of_words[cl].append(pb)
 
         self.fitted_words = pb_of_words

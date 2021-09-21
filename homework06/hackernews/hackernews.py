@@ -100,9 +100,7 @@ def classify_news():
         elif cl == "maybe":
             maybe_news.append(news)
 
-    return template(
-        "templates/recommendations.tpl", liked_news=liked_news, maybe_news=maybe_news
-    )
+    return template("templates/recommendations.tpl", liked_news=liked_news, maybe_news=maybe_news)
 
 
 if __name__ == "__main__":

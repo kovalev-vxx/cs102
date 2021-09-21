@@ -33,12 +33,7 @@ Base.metadata.create_all(bind=engine)
 
 
 def duplicate_check(title, author, session):
-    if (
-        session.query(News)
-        .filter(News.author == author)
-        .filter(News.title == title)
-        .all()
-    ):
+    if session.query(News).filter(News.author == author).filter(News.title == title).all():
         return False
     return True
 
@@ -59,9 +54,7 @@ def upload_to_db(news_list, session):
             item["comments"],
         )
         if duplicate_check(title=title, author=author, session=session):
-            add_news = News(
-                title=title, author=author, url=url, points=points, comments=comments
-            )
+            add_news = News(title=title, author=author, url=url, points=points, comments=comments)
             session.add(add_news)
     session.commit()
     session.close()
