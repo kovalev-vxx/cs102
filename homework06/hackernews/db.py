@@ -28,24 +28,40 @@ class News(Base):
     points = Column(Integer)
     label = Column(String)
 
+
 Base.metadata.create_all(bind=engine)
 
+
 def duplicate_check(title, author, session):
-    if session.query(News).filter(News.author == author).filter(News.title == title).all():
+    if (
+        session.query(News)
+        .filter(News.author == author)
+        .filter(News.title == title)
+        .all()
+    ):
         return False
     return True
+
 
 def update_label(id, label, session):
     item = session.query(News).get(id)
     item.label = label
     session.commit()
 
+
 def upload_to_db(news_list, session):
     for item in news_list:
-        author, title, url, points, comments = item["author"], item["title"], item["url"], item["points"], item[
-            "comments"]
+        author, title, url, points, comments = (
+            item["author"],
+            item["title"],
+            item["url"],
+            item["points"],
+            item["comments"],
+        )
         if duplicate_check(title=title, author=author, session=session):
-            add_news = News(title=title, author=author, url=url, points=points, comments=comments)
+            add_news = News(
+                title=title, author=author, url=url, points=points, comments=comments
+            )
             session.add(add_news)
     session.commit()
     session.close()

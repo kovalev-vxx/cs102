@@ -9,15 +9,16 @@ def clear(doc):
     translator = str.maketrans("", "", digits)
     return doc.translate(translator)
 
+
 def flatten(array):
     return [y for x in array for y in x]
+
 
 def lower(array):
     return [i.lower() for i in array if i != ""]
 
 
 class NaiveBayesClassifier:
-
     def __init__(self, alpha):
         self.alpha = alpha
         self.fitted_words = {}
@@ -34,7 +35,7 @@ class NaiveBayesClassifier:
             docs_sorted_by_class[cl] = []
             for doc, label in zip(X, y):
                 if label == cl:
-                    doc = lower((clear(doc)).split(' '))
+                    doc = lower((clear(doc)).split(" "))
                     docs_sorted_by_class[cl].append(doc)
 
         words_sorted_by_class = {}
@@ -59,10 +60,14 @@ class NaiveBayesClassifier:
             pb_of_words[cl] = []
             for word in pb_of_words["words"]:
                 if word in words_sorted_by_class[cl]:
-                    pb = (counter_words[cl][word] + self.alpha) / (len(words_sorted_by_class[cl]) + d * self.alpha)
+                    pb = (counter_words[cl][word] + self.alpha) / (
+                        len(words_sorted_by_class[cl]) + d * self.alpha
+                    )
                     pb_of_words[cl].append(pb)
                 else:
-                    pb = (self.alpha) / (len(words_sorted_by_class[cl]) + d * self.alpha)
+                    pb = (self.alpha) / (
+                        len(words_sorted_by_class[cl]) + d * self.alpha
+                    )
                     pb_of_words[cl].append(pb)
 
         self.fitted_words = pb_of_words
@@ -75,7 +80,7 @@ class NaiveBayesClassifier:
             predicted_class = {}
             for cl in self.pb_of_classes:
                 predicted_class[cl] = []
-                for word in lower((clear(doc)).split(' ')):
+                for word in lower((clear(doc)).split(" ")):
                     try:
                         index = self.fitted_words["words"].index(word)
                         predicted_class[cl].append(ln(self.fitted_words[cl][index]))
@@ -94,11 +99,10 @@ class NaiveBayesClassifier:
         return predicted_docs
 
     def score(self, X_test, y_test):
-        """ Returns the mean accuracy on the given test data and labels. """
+        """Returns the mean accuracy on the given test data and labels."""
         predicted_classes = self.predict((X_test))["pred_class"]
         score = 0
         for predicted, real in zip(predicted_classes, y_test):
             if predicted == real:
                 score += 1
         return score / len(y_test)
-
