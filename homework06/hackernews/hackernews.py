@@ -1,15 +1,7 @@
-from bottle import route, run, template, request, redirect
-
-from db import (
-    News,
-    get_session,
-    engine,
-    update_label,
-    get_fresh_news,
-    clear_without_label_news,
-    clear_labels,
-)
 from bayes import NaiveBayesClassifier
+from bottle import redirect, request, route, run, template
+from db import (News, clear_labels, clear_without_label_news, engine,
+                get_fresh_news, get_session, update_label)
 
 
 @route("/")

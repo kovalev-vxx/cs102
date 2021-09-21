@@ -1,6 +1,6 @@
-from math import log as ln
 from collections import Counter
-from string import punctuation, digits
+from math import log as ln
+from string import digits, punctuation
 
 
 def clear(doc):
