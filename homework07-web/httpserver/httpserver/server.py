@@ -30,6 +30,7 @@ class TCPServer:
         serv_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, True)
         serv_socket.bind(address)
         serv_socket.listen(self.backlog_size)
+        print(f"Listening on http://{address[0]}:{address[1]}/")
 
         for thread in range(self.max_workers):
             self._threads.append(threading.Thread(target=self.handle_accept, args=(serv_socket,)))
@@ -46,7 +47,7 @@ class TCPServer:
             client_socket, address = server_socket.accept()
             client_socket.settimeout(self.timeout)
             request = self.request_handler_cls(client_socket, address, server_socket)
-            print(f"Listening on http://{address[0]}:{address[1]}/")
+            print(f"Hello http://{address[0]}:{address[1]}/")
             request.handle()
 
 
