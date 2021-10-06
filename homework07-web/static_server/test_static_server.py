@@ -23,7 +23,7 @@ class TestStaticHTTPServer(unittest.TestCase):
         """Connection timeout"""
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.connect(("localhost", self.port))
-        s.settimeout(5)
+        s.settimeout(61)
         s.sendall(b"")
         data = s.recv(1024)
         s.close()

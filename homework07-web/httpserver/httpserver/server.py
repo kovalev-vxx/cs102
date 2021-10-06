@@ -27,6 +27,7 @@ class TCPServer:
     def serve_forever(self) -> None:
         address = (self.host, self.port)
         serv_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        serv_socket.settimeout(self.timeout)
         serv_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, True)
         serv_socket.bind(address)
         serv_socket.listen(self.backlog_size)
@@ -53,7 +54,3 @@ class TCPServer:
 
 class HTTPServer(TCPServer):
     pass
-
-if __name__ == "__main__":
-    server = TCPServer(host="localhost", port=5050)
-    server.serve_forever()

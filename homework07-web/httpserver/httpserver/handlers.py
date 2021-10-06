@@ -8,8 +8,8 @@ from httptools import HttpRequestParser
 
 from httptools.parser.errors import *
 
-from request import HTTPRequest
-from response import HTTPResponse
+from .request import HTTPRequest
+from .response import HTTPResponse
 
 Address = tp.Tuple[str, int]
 

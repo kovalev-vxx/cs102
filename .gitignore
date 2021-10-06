@@ -16,3 +16,7 @@ coverage.xml
 
 .DS_Store
 .vscode
+.idea
+.dist
+.httpserver.egg-info
+
