@@ -1,0 +1,11 @@
+setup.py
+wsgiserver/__init__.py
+wsgiserver/__main__.py
+wsgiserver/request.py
+wsgiserver/response.py
+wsgiserver/server.py
+wsgiserver.egg-info/PKG-INFO
+wsgiserver.egg-info/SOURCES.txt
+wsgiserver.egg-info/dependency_links.txt
+wsgiserver.egg-info/requires.txt
+wsgiserver.egg-info/top_level.txt
