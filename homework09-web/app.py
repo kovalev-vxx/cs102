@@ -1,5 +1,4 @@
 import datetime as dt
-import json
 import typing as tp
 
 import jwt
@@ -9,6 +8,7 @@ from slowapi.middlewares import CORSMiddleware
 
 app = SlowAPI()
 notes: tp.Dict[int, tp.Dict[str, tp.Any]] = {}
+users: tp.List[str] = []
 
 JWT_SECRET = "secret"
 JWT_ALGORITHM = "HS256"
@@ -22,8 +22,11 @@ def dt_json_serializer(o):
 
 @app.post("/api/jwt-auth/")
 def login(request: Request) -> JsonResponse:
+    global users
     user_data = request.json()
-    users.add(user_data["email"])
+    if user_data is None:
+        return JsonResponse(data={"error": "got empty user_data"})
+    users.append(user_data["email"])
     payload = {
         "email": user_data["email"],
         "exp": dt.datetime.utcnow() + dt.timedelta(seconds=JWT_EXP_DELTA_SECONDS),
@@ -35,6 +38,8 @@ def login(request: Request) -> JsonResponse:
 @app.post("/api/notes")
 def add_note(request: Request) -> JsonResponse:
     note = request.json()
+    if note is None:
+        return JsonResponse(data={"error": "got empty note"})
     note_id = len(notes) + 1
     note["id"] = note_id
     note["pub_date"] = dt.datetime.now()
@@ -58,20 +63,18 @@ def get_note(request: Request, id: int) -> JsonResponse:
 def update_note(request: Request, id: int) -> JsonResponse:
     note_id = int(id)
     data = request.json()
+    if data is None:
+        return JsonResponse(data={"error": "got empty request"})
     note = notes[note_id]
     note["title"] = data["title"]
     note["body"] = data["body"]
-    return JsonResponse(data={})
+    return JsonResponse(data={"status": "ok"})
 
 
 app.add_middleware(CORSMiddleware)
 
 
 def main():
-    # TODO: Добавить автоматическое приведение типов аргументов
-    # TODO: Добавить авторизацию пользователей
-    # TODO: Добавить обработку завершающего слеша
-
     from wsgiserver import WSGIRequestHandler, WSGIServer
 
     server = WSGIServer(port=8080, request_handler_cls=WSGIRequestHandler)
